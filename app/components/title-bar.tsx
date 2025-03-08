@@ -1,12 +1,15 @@
 import { type Window, getCurrentWindow } from "@tauri-apps/api/window";
-import { useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { ChevronRightIcon } from "lucide-react";
+import { Fragment, useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { cn } from "~/lib/utils";
 import { useBreadcrumbs } from "~/providers/breadcrumbs";
 
 export default function WindowTitleBar() {
+	const { pathname } = useLocation();
 	const [currentWindow, setCurrentWindow] = useState<Window>();
 	const { breadcrumbs } = useBreadcrumbs();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setCurrentWindow(getCurrentWindow());
@@ -41,6 +44,9 @@ export default function WindowTitleBar() {
 				className={cn("fixed inset-x-0 top-0 z-50 flex h-[32px] select-none")}
 				data-tauri-drag-region
 			>
+				{pathname !== "/" && (
+					<CaptionButton icon={<>&#xE72B;</>} onClick={() => navigate("/")} />
+				)}
 				<ol className="pointer-events-none ml-4 flex items-center whitespace-nowrap font-segeo-ui text-base">
 					<li>
 						<img
@@ -50,10 +56,17 @@ export default function WindowTitleBar() {
 						/>
 					</li>
 					<li className="ml-4">Decent Client</li>
-					{breadcrumbs.map((crumb) => (
-						<li key={crumb} className="ml-2 text-muted-foreground">
-							{crumb}
-						</li>
+					{breadcrumbs.map((crumb, index) => (
+						<Fragment key={crumb}>
+							{index > 0 && (
+								<li className="ml-2 [&>svg]:size-3.5">
+									<ChevronRightIcon className="stroke-muted-foreground" />
+								</li>
+							)}
+							<li key={crumb} className="ml-2 text-muted-foreground">
+								{crumb}
+							</li>
+						</Fragment>
 					))}
 				</ol>
 				<CaptionControlGroup className="ml-auto">
@@ -61,7 +74,7 @@ export default function WindowTitleBar() {
 						<CaptionButton
 							key={button.key}
 							icon={button.icon}
-							close={button.close}
+							isClose={button.close}
 							onClick={button.onClick}
 						/>
 					))}
@@ -72,31 +85,29 @@ export default function WindowTitleBar() {
 	);
 }
 
-function CaptionButton({
-	icon,
-	className,
-	close = false,
-	onClick,
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-	icon: React.ReactNode;
-	className?: string;
-	close?: boolean;
-}) {
+function CaptionButton(
+	props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+		icon: React.ReactNode;
+		className?: string;
+		isClose?: boolean;
+	},
+) {
 	return (
 		<button
 			type="button"
 			className={cn(
-				"flex h-[32px] w-[46px] cursor-default items-center justify-center   transition-colors duration-100",
+				"flex h-[32px] w-[46px] cursor-default items-center justify-center transition-colors duration-100",
 				"hover:bg-[rgba(255,255,255,0.0605)] active:bg-[rgba(255,255,255,0.0419)] disabled:text-[rgba(255,255,255,0.3628)] disabled:hover:bg-transparent",
 				{
-					"hover:bg-[rgb(196_43_28)] active:bg-[rgb(196_42_28/0.9)]": close,
+					"hover:bg-[rgb(196_43_28)] active:bg-[rgb(196_42_28/0.9)]":
+						props.isClose,
 				},
-				className,
+				props.className,
 			)}
-			onClick={onClick}
+			{...props}
 		>
-			<span className="text-[10px] font-[300] font-segoe-fluent-icons text-foreground">
-				{icon}
+			<span className="font-[300] font-segoe-fluent-icons text-[10px] text-foreground">
+				{props.icon}
 			</span>
 		</button>
 	);

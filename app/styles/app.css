@@ -11,6 +11,7 @@
   --font-minecraft: "Minecraft", ui-sans-serif;
   --grid-layout: 16rem 1fr;
   --grid-friend-item: 1.25rem 1fr 0.75rem;
+  --grid-friend-item-row: 1.25rem 1rem;
 }
 
 html, body {

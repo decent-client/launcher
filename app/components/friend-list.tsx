@@ -5,11 +5,13 @@ import { Card } from "~/components/ui/card";
 import {
 	Command,
 	CommandEmpty,
+	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
 } from "~/components/ui/command";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { useSessionStorage } from "~/hooks/storage";
 import { cn } from "~/lib/utils";
 import { SearchBar } from "./search-bar";
 
@@ -27,7 +29,7 @@ const friends = [
 	},
 	{
 		skin: "https://skins.mcstats.com/face/1c682784-a9cc-43bd-8007-3aa2e3878712",
-		username: "SillyBillyTime",
+		username: "liqwtf",
 		online: true,
 		playing: "Hypixel",
 	},
@@ -62,71 +64,102 @@ export function FriendList({ className }: { className?: string }) {
 			>
 				<Plus className="size-4.5 stroke-3" />
 			</Button>
-			<Command className="mt-0.5 mb-2 w-auto bg-transparent">
+			<Command className="mt-0.5 mb-2 w-auto bg-transparent" loop>
 				<SearchBar
 					className="mr-2 ml-5.5 bg-card/50"
 					input={
 						<CommandInput
-							className="w-full rounded-none rounded-se-full rounded-ee-full outline-none placeholder:text-muted-foreground"
+							className="w-full rounded-none rounded-se-full rounded-ee-full text-sm outline-none placeholder:text-muted-foreground"
 							placeholder={"Search for friends..."}
 						/>
 					}
 				/>
-				{friends.length > 0 && onlineFriends && (
-					<p className="mt-1 ml-8 text-muted-foreground text-sm">
-						Online &minus; {onlineFriends}
-					</p>
-				)}
 				<ScrollArea className="grow overflow-hidden">
 					<CommandList className="ml-8 max-h-auto">
-						{friends.map((friend) => {
-							const keywords = [
-								friend.username,
-								friend.online ? "online" : "offline",
-								friend.playing,
-								friend.favorite && "favorite best",
-							].filter(Boolean);
-
-							return (
-								<CommandItem
-									key={friend.username}
-									className="grid h-7 w-full grid-cols-(--grid-friend-item) gap-x-2 rounded-e-none p-1"
-									value={keywords.join(" ")}
-								>
-									<img
-										src={friend.skin}
-										className="z-50 size-5 rounded-sm"
-										alt="Skin"
-									/>
-									<h1 className="truncate font-minecraft text-base text-minecraft-foreground leading-4">
-										{friend.username}
-									</h1>
-									<Circle
-										className={cn(
-											"col-start-3 size-1.5 fill-green-500 text-green-500",
-											{ "fill-red-500 text-red-500": !friend.online },
-										)}
-									/>
-								</CommandItem>
-							);
-						})}
 						<CommandEmpty className="mt-2 mr-8 flex flex-col items-center justify-center">
 							No friends found...
 						</CommandEmpty>
+						<CommandGroup
+							className="mt-1 p-0 [&_[cmdk-group-heading]]:p-0 [&_[cmdk-group-heading]]:font-normal [&_[cmdk-group-heading]]:text-sm"
+							heading={`Online − ${onlineFriends}`}
+						>
+							{friends.map((friend) => {
+								const keywords = [
+									friend.username,
+									friend.online ? "online" : "offline",
+									friend.playing ?? undefined,
+									friend.favorite ? "favorite best" : undefined,
+								].filter((keyword): keyword is string => !!keyword);
+
+								return (
+									<CommandItem
+										key={friend.username}
+										className="group grid h-7 cursor-pointer grid-cols-(--grid-friend-item) grid-rows-[--grid-friend-item-row] items-start gap-0 gap-x-2 overflow-hidden rounded-e-none p-1 transition-[height] aria-selected:h-11"
+										keywords={keywords}
+									>
+										<img
+											src={friend.skin}
+											className="z-50 size-5 rounded-sm"
+											alt="Skin"
+										/>
+										<h1 className="truncate font-minecraft text-base text-minecraft-foreground leading-5">
+											{friend.username}
+										</h1>
+										<StatusIndicator
+											online={friend.online ?? false}
+											className="mt-1.75 transition-opacity group-aria-selected:opacity-0"
+										/>
+										<p className="col-span-3 ml-1.25 flex h-4 items-center gap-x-1.5 opacity-0 transition-opacity delay-75 group-aria-selected:opacity-100">
+											<StatusIndicator online={friend.online ?? false} />
+											<span className="text-muted-foreground text-xs italic">
+												{friend.playing
+													? `Playing on ${friend.playing}`
+													: "Last online 12 hours ago"}
+											</span>
+										</p>
+									</CommandItem>
+								);
+							})}
+						</CommandGroup>
 					</CommandList>
 				</ScrollArea>
 			</Command>
-			<Button
-				className="mt-auto ml-6 h-7 w-auto justify-start gap-3 rounded-s-full rounded-e-none transition-[margin] hover:ml-7"
-				variant={"ghost"}
-				size={"sm"}
-				asChild
-			>
-				<Link to="/settings">
-					<SettingsIcon className="size-4" />
-					<span className="font-medium text-base">Settings</span>
-				</Link>
-			</Button>
+			<SettingsButton />
 		</aside>
+	);
+}
+
+function SettingsButton() {
+	const [settingsTab] = useSessionStorage("settings-tab", "preferences");
+
+	return (
+		<Button
+			className="mt-auto ml-6 h-7 w-auto justify-start gap-3 rounded-s-full rounded-e-none transition-[margin] hover:ml-7"
+			variant={"ghost"}
+			size={"sm"}
+			asChild
+		>
+			<Link to={`/settings/${settingsTab}`}>
+				<SettingsIcon className="size-4" />
+				<span className="font-medium text-base">Settings</span>
+			</Link>
+		</Button>
+	);
+}
+
+function StatusIndicator({
+	online,
+	className,
+}: { online: boolean; className?: string }) {
+	return (
+		<Circle
+			className={cn(
+				"size-1.5 fill-green-500 text-green-500",
+				{
+					"fill-red-500 text-red-500": !online,
+				},
+				className,
+			)}
+		/>
 	);
 }
