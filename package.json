@@ -6,7 +6,8 @@
 		"build": "react-router build",
 		"dev": "react-router dev",
 		"start": "react-router-serve ./build/server/index.js",
-		"typecheck": "react-router typegen && tsc"
+		"typecheck": "react-router typegen && tsc",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@radix-ui/react-dialog": "^1.1.6",
@@ -37,11 +38,15 @@
 		"@types/node": "^20",
 		"@types/react": "^19.0.1",
 		"@types/react-dom": "^19.0.1",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.4.3",
 		"react-router-devtools": "^1.1.0",
 		"tailwindcss": "^4.0.0",
 		"typescript": "^5.7.2",
 		"vite": "^5.4.11",
 		"vite-tsconfig-paths": "^5.1.4"
 	},
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }
