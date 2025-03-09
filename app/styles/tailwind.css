@@ -141,6 +141,23 @@ html, body {
     @apply bg-background text-foreground;
   }
 
+  img {
+    @apply pointer-events-none
+
+  }
+
+  button {
+    @apply cursor-pointer
+  }
+  
+  *:not(input) {
+    @apply select-none
+  }
+
+  .font-minecraft {
+    text-shadow: 0.15em 0.15em 0 #3f3f3f;
+  }
+
   @font-face {
 		font-family: "Satoshi";
 		src: url("/fonts/Satoshi-Variable.ttf"),
