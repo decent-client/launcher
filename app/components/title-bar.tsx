@@ -5,6 +5,10 @@ import { TitleBarMenu } from "~/components/title-bar-menu";
 import { cn } from "~/lib/utils";
 import { useAppWindow } from "~/providers/app-window";
 
+interface Handle {
+  breadcrumb?: string;
+}
+
 export default function WindowTitleBar() {
   const { isMaximized, minimizeWindow, maximizeWindow, closeWindow } = useAppWindow();
   const { pathname } = useLocation();
@@ -12,8 +16,8 @@ export default function WindowTitleBar() {
   const navigate = useNavigate();
 
   const breadcrumbs = matches
-    .filter((match) => match.handle && match.handle.breadcrumb)
-    .map((match) => match.handle.breadcrumb);
+    .filter((match) => match.handle && (match.handle as Handle).breadcrumb)
+    .map((match) => (match.handle as Handle).breadcrumb);
 
   console.log(breadcrumbs);
 
