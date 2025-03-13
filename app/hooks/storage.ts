@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
-  if (typeof window === "undefined") {
-    const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
+  if (typeof window === "undefined") {
     return [value as T, setValue] as const;
   }
 
@@ -11,9 +11,9 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 }
 
 export function useSessionStorage<T>(key: string, initialValue: T) {
-  if (typeof window === "undefined") {
-    const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
+  if (typeof window === "undefined") {
     return [value as T, setValue] as const;
   }
 
