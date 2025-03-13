@@ -2,23 +2,28 @@ import { BellDotIcon, MonitorCogIcon, PackageOpenIcon, PickaxeIcon, RocketIcon }
 import { NavLink, Outlet, useLocation } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { useSessionStorage } from "~/hooks/storage";
 import { cn } from "~/lib/utils";
 
-export const tabs: {
+export const handle = {
+  breadcrumb: "Settings",
+};
+
+const tabs: {
   title: string;
   icon: React.ReactNode;
   value: string;
 }[] = [
   {
-    title: "Preferences",
-    icon: <MonitorCogIcon className="size-4" />,
-    value: "preferences",
-  },
-  {
     title: "Launcher",
     icon: <RocketIcon className="size-4" />,
     value: "launcher",
+  },
+  {
+    title: "Game Preferences",
+    icon: <MonitorCogIcon className="size-4" />,
+    value: "preferences",
   },
   {
     title: "Notifications",
@@ -69,8 +74,10 @@ export default function SettingsLayout() {
           ))}
         </ul>
       </aside>
-      <Card className="rounded-none rounded-ss-xl bg-card/50 p-2">
-        <Outlet />
+      <Card className="relative overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-card/50 p-0 px-2">
+        <ScrollArea className="grow overflow-hidden" scrollBarClassName="py-2">
+          <Outlet />
+        </ScrollArea>
       </Card>
     </main>
   );

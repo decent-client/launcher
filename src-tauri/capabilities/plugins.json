@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "plugins",
+  "description": "enables the permissions for plugins",
+  "windows": ["launcher"],
+  "permissions": ["system-info:allow-all", "player-skin:default"]
+}

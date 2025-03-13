@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-import { useBreadcrumbs } from "~/providers/breadcrumbs";
+export const handle = {
+  breadcrumb: "Launcher",
+};
 
 export default function Launcher() {
-	const { setBreadcrumbs } = useBreadcrumbs();
-
-	useEffect(() => {
-		setBreadcrumbs(["Settings", "Launcher"]);
-	}, [setBreadcrumbs]);
-
-	return <article>eh</article>;
+  return <article>eh</article>;
 }

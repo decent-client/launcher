@@ -2,9 +2,13 @@ import { Links, type LinksFunction, Meta, Outlet, Scripts, isRouteErrorResponse 
 import { Providers } from "~/providers";
 import type { Route } from "./+types/root";
 
+import sonner from "~/styles/sonner.css?url";
 import tailwind from "~/styles/tailwind.css?url";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: tailwind }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: tailwind },
+  { rel: "stylesheet", href: sonner },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

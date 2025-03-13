@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-import { useBreadcrumbs } from "~/providers/breadcrumbs";
+export const handle = {
+  breadcrumb: "Notifications",
+};
 
 export default function Notifications() {
-	const { setBreadcrumbs } = useBreadcrumbs();
-
-	useEffect(() => {
-		setBreadcrumbs(["Settings", "Notifications"]);
-	}, [setBreadcrumbs]);
-
-	return <article>eh</article>;
+  return <article>eh</article>;
 }

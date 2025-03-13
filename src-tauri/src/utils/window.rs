@@ -1,55 +1,58 @@
-use tauri::{AppHandle, WebviewUrl, WebviewWindowBuilder};
+use tauri::{AppHandle, Error, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 
 #[cfg(target_os = "macos")]
 use tauri::TitleBarStyle;
 
 pub struct WindowOptions {
     pub title: String,
+    pub identifier: String,
+    pub url: String,
     pub width: f64,
     pub height: f64,
     pub min_width: Option<f64>,
     pub min_height: Option<f64>,
+    pub max_width: Option<f64>,
+    pub max_height: Option<f64>,
     pub centered: Option<bool>,
-    pub decorations: Option<bool>,
-    pub transparent: Option<bool>,
-    pub resizeable: Option<bool>,
-    pub identifier: String,
-    pub url: String,
+    pub resizable: Option<bool>,
+    pub maximizable: Option<bool>,
 }
 
 impl Default for WindowOptions {
     fn default() -> Self {
         Self {
             title: "Decent Client".to_string(),
-            width: 800.0,
-            height: 600.0,
-            min_width: Some(400.0),
-            min_height: Some(200.0),
-            centered: Some(true),
-            decorations: Some(false),
-            transparent: Some(true),
-            resizeable: Some(true),
-            identifier: "unknown".to_string(),
+            identifier: "".to_string(),
             url: "/".to_string(),
+            width: 600.0,
+            height: 400.0,
+            min_width: Some(600.0),
+            min_height: Some(400.0),
+            max_width: None,
+            max_height: None,
+            centered: Some(true),
+            resizable: Some(true),
+            maximizable: Some(true),
         }
     }
 }
 
-pub fn create_window(
-    app: &AppHandle,
-    options: WindowOptions,
-) -> tauri::Result<tauri::WebviewWindow> {
+pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewWindow, Error> {
     let mut window_builder =
         WebviewWindowBuilder::new(app, options.identifier, WebviewUrl::App(options.url.into()))
             .title(options.title)
             .inner_size(options.width, options.height)
-            .decorations(options.decorations.unwrap_or(false))
-            .transparent(options.transparent.unwrap_or(true))
-            .resizable(options.resizeable.unwrap_or(true))
-            .theme(Some(tauri::Theme::Dark));
+            .resizable(options.resizable.unwrap())
+            .maximizable(options.maximizable.unwrap())
+            .decorations(false)
+            .transparent(true);
 
     if let (Some(min_width), Some(min_height)) = (options.min_width, options.min_height) {
         window_builder = window_builder.min_inner_size(min_width, min_height);
+    }
+
+    if let (Some(max_width), Some(max_height)) = (options.max_width, options.max_height) {
+        window_builder = window_builder.max_inner_size(max_width, max_height);
     }
 
     if options.centered.unwrap() {
@@ -57,7 +60,7 @@ pub fn create_window(
     }
 
     #[cfg(target_os = "macos")]
-    let window_builder = window_builder.title_bar_style(TitleBarStyle::Transparent);
+    let window_builder = window_builder.title_bar_style(TitleBarStyle::Overlay);
 
     #[cfg(target_os = "windows")]
     let window_builder = window_builder.effects(
@@ -67,24 +70,6 @@ pub fn create_window(
     );
 
     let window = window_builder.build()?;
-
-    #[cfg(target_os = "macos")]
-    {
-        use cocoa::appkit::{NSColor, NSWindow};
-        use cocoa::base::{id, nil};
-
-        let ns_window = window.ns_window().unwrap() as id;
-        unsafe {
-            let bg_color = NSColor::colorWithRed_green_blue_alpha_(
-                nil,
-                50.0 / 255.0,
-                158.0 / 255.0,
-                163.5 / 255.0,
-                1.0,
-            );
-            ns_window.setBackgroundColor_(bg_color);
-        }
-    }
 
     Ok(window)
 }
@@ -110,11 +95,13 @@ pub fn create_splash_screen_window(app: &AppHandle) -> tauri::Result<tauri::Webv
         app,
         WindowOptions {
             title: "Decent Client".to_string(),
-            width: 400.0,
-            height: 200.0,
-            resizeable: Some(false),
             identifier: "splash-screen".to_string(),
             url: "/splash-screen".to_string(),
+            width: 400.0,
+            height: 200.0,
+            min_width: Some(400.0),
+            min_height: Some(200.0),
+            resizable: Some(false),
             ..WindowOptions::default()
         },
     )
