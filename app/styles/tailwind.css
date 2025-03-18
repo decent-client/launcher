@@ -10,6 +10,7 @@
   --font-segoe-ui: "Segoe UI", ui-sans-serif;
   --font-segoe-fluent-icons: "Segoe Fluent Icons", ui-sans-serif;
   --font-minecraft: "Minecraft", ui-sans-serif;
+  --title-bar-height: 32px;
   --grid-layout: 16rem 1fr;
   --grid-friend-item: 1.25rem 1fr 0.75rem;
   --grid-friend-item-row: 1.25rem 1rem;

@@ -16,7 +16,7 @@ export const handle = {
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="mt-8 grid h-screen grid-cols-(--grid-layout) overflow-hidden">
+    <main className="grid h-screen grid-cols-(--grid-layout) overflow-hidden">
       <FriendList />
       {children}
     </main>

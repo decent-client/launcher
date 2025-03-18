@@ -3,5 +3,17 @@
   "identifier": "plugins",
   "description": "enables the permissions for plugins",
   "windows": ["launcher"],
-  "permissions": ["system-info:allow-all", "player-skin:default"]
+  "permissions": [
+    "system-info:allow-all",
+    "os:default",
+    "fs:default",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-create",
+    {
+      "identifier": "fs:scope",
+      "allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }]
+    },
+    "player-skin:default"
+  ]
 }

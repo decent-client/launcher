@@ -43,11 +43,11 @@ const tabs: {
 ];
 
 export default function SettingsLayout() {
-  const [_, setSettingsTab] = useSessionStorage("settings-tab", "preferences");
+  const [_, setSettingsTab] = useSessionStorage("settings-tab", "launcher");
   const { pathname } = useLocation();
 
   return (
-    <main className="mt-8 grid h-screen grid-cols-(--grid-layout) overflow-hidden">
+    <main className="grid h-screen grid-cols-(--grid-layout) overflow-hidden">
       <aside className="relative mt-2 mb-8 flex flex-col overflow-hidden">
         <h1 className="ml-8 w-full font-extrabold font-sans text-xl">Settings</h1>
         <ul className="flex grow flex-col gap-y-0.5">
