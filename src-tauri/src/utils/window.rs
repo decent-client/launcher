@@ -19,23 +19,27 @@ pub struct WindowOptions {
     pub centered: Option<bool>,
     pub resizable: Option<bool>,
     pub maximizable: Option<bool>,
+    pub decorations: Option<bool>,
+    pub transparent: Option<bool>,
 }
 
 impl Default for WindowOptions {
     fn default() -> Self {
         Self {
-            title: "Decent Client".to_string(),
-            identifier: "".to_string(),
+            title: Default::default(),
+            identifier: Default::default(),
             url: WebviewUrl::App("/".into()),
             width: 600.0,
             height: 400.0,
-            min_width: Some(600.0),
-            min_height: Some(400.0),
+            min_width: None,
+            min_height: None,
             max_width: None,
             max_height: None,
             centered: Some(true),
             resizable: Some(true),
             maximizable: Some(true),
+            decorations: Some(false),
+            transparent: Some(true),
         }
     }
 }
@@ -46,8 +50,6 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
         .inner_size(options.width, options.height)
         .resizable(options.resizable.unwrap())
         .maximizable(options.maximizable.unwrap())
-        .decorations(false)
-        .transparent(true)
         .effects(
             EffectsBuilder::new()
                 .effects([
@@ -58,6 +60,14 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
                 ])
                 .build(),
         );
+
+    if let Some(transparent) = options.transparent {
+        window_builder = window_builder.transparent(transparent)
+    }
+
+    if let Some(decorations) = options.decorations {
+        window_builder = window_builder.decorations(decorations)
+    }
 
     if let (Some(min_width), Some(min_height)) = (options.min_width, options.min_height) {
         window_builder = window_builder.min_inner_size(min_width, min_height);
@@ -86,11 +96,12 @@ pub fn create_launcher_window(app: &AppHandle) -> tauri::Result<tauri::WebviewWi
         app,
         WindowOptions {
             title: "Decent Client - Launcher".to_string(),
+            identifier: "launcher".to_string(),
+            url: WebviewUrl::App("/".into()),
             width: 1086.0,
             height: 548.0,
             min_width: Some(792.0),
             min_height: Some(540.0),
-            identifier: "launcher".to_string(),
             ..WindowOptions::default()
         },
     )
@@ -105,8 +116,6 @@ pub fn create_splash_screen_window(app: &AppHandle) -> tauri::Result<tauri::Webv
             url: WebviewUrl::App("/splash-screen".into()),
             width: 400.0,
             height: 200.0,
-            min_width: Some(400.0),
-            min_height: Some(200.0),
             resizable: Some(false),
             ..WindowOptions::default()
         },

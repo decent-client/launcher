@@ -25,6 +25,7 @@ base64 = "0.22.1"
 image = "0.25"
 thiserror = "1.0.50"
 chrono = { version = "0.4.31", features = ["serde"] }
+url = "2.5.0"
 
 tauri = { version = "2.3.1", features = [] }
 tauri-plugin-log = "2.3.0"
