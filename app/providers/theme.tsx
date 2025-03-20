@@ -1,22 +1,46 @@
-import { createContext, useContext } from "react";
+import { setTheme as setAppTheme } from "@tauri-apps/api/app";
+import { Loader2Icon, MonitorIcon, MoonIcon, MoonStarIcon, SunIcon } from "lucide-react";
+import { type JSX, createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "~/hooks/storage";
 
-export type Theme = "dark" | "light" | "system" | "oled";
+export type Theme = "light" | "dark" | "oled" | "system";
+
+export const themes: Extract<Theme, "oled" | "system">[] = ["oled", "system"];
+export const icons = {
+  light: <SunIcon className="size-3.5" />,
+  dark: <MoonIcon className="size-3.5" />,
+  oled: <MoonStarIcon className="size-3.5" />,
+  system: <MonitorIcon className="size-3.5" />,
+};
 
 type ThemeProviderState = {
   theme: Theme;
+  themeIcon: JSX.Element;
   setTheme: (theme: Theme) => void;
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
+  themeIcon: <Loader2Icon className="size-3.5 animate-spin" />,
   setTheme: () => null,
 });
+
+function resolveTheme(theme: Theme) {
+  if (theme === "system") {
+    return undefined;
+  }
+
+  if (theme === "oled") {
+    return "dark";
+  }
+
+  return theme;
+}
 
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "ui-theme",
+  storageKey = "theme",
   ...props
 }: {
   children: React.ReactNode;
@@ -24,28 +48,32 @@ export function ThemeProvider({
   storageKey?: string;
 }) {
   const [theme, setTheme] = useLocalStorage(storageKey, defaultTheme);
+  const [themeIcon, setIcon] = useState(<Loader2Icon className="size-3.5 animate-spin" />);
 
-  // useEffect(() => {
-  //   if (typeof document !== "undefined") {
-  //     const root = window.document.documentElement;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const root = window.document.documentElement;
+      let resolvedTheme = theme;
 
-  //     root.classList.remove("light", "dark", "oled");
+      root.classList.remove(...themes);
 
-  //     if (theme === "system") {
-  //       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      if (theme === "system") {
+        resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        setIcon(icons[resolvedTheme]);
+      } else {
+        setIcon(icons[theme]);
+      }
 
-  //       root.classList.add(systemTheme);
-  //       return;
-  //     }
-
-  //     root.classList.add(theme);
-  //   }
-  // }, [theme]);
+      root.classList.add(resolvedTheme);
+      setAppTheme(resolveTheme(theme));
+    }
+  }, [theme]);
 
   return (
     <ThemeProviderContext.Provider
       value={{
         theme,
+        themeIcon,
         setTheme,
       }}
       {...props}

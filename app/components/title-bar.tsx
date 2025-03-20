@@ -3,6 +3,7 @@ import { Outlet, useLocation, useMatches, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
 import { Back, Close, Maximize, Minimize, Restore } from "~/components/icons/chrome";
 import { Notifications } from "~/components/notifications";
+import { ThemeToggle } from "~/components/theme-toggle";
 import { cn } from "~/lib/utils";
 import { useAppWindow } from "~/providers/app-window";
 
@@ -77,6 +78,7 @@ export default function WindowTitleBar() {
           })}
         </ul>
         <TitleBarMenu className="ml-auto">
+          <ThemeToggle />
           <Notifications />
         </TitleBarMenu>
         <CaptionControlGroup>
