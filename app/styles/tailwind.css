@@ -51,7 +51,11 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --app-background: oklch(0.99 0.00 0 / 0);
+  --caption-button: transparent;
+  --caption-button-hover: oklch(0.92 0.00 0);
+  --caption-button-active: oklch(0.87 0.00 0);
+  --caption-button-close-hover: oklch(0.58 0.22 27);
+  --caption-button-close-active: oklch(0.51 0.19 28);
 }
 
 .dark {
@@ -88,44 +92,8 @@
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
 
-  --app-background: oklch(0.14 0.00 0 / 0);
-}
-
-.oled {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-
-  --app-background: oklch(0.14 0.00 0);
+  --caption-button-hover: oklch(0.27 0.00 0);
+  --caption-button-active: oklch(0.37 0.00 0);
 }
 
 @theme inline {
@@ -166,7 +134,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-app-background: var(--app-background);
+  --color-caption-button: var(--caption-button);
+  --color-caption-button-hover: var(--caption-button-hover);
+  --color-caption-button-active: var(--caption-button-active);
+  --color-caption-button-close-hover: var(--caption-button-close-hover);
+  --color-caption-button-close-active: var(--caption-button-close-active);
 }
 
 @layer base {
@@ -175,7 +147,7 @@
   }
 
   body {
-    @apply bg-app-background text-foreground;
+    @apply bg-sidebar text-foreground;
   }
 
   img {

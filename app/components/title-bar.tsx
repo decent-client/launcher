@@ -109,9 +109,9 @@ function CaptionButton({
       type="button"
       className={cn(
         "flex h-(--title-bar-height) w-[46px] cursor-default items-center justify-center transition-colors duration-100",
-        "hover:bg-[rgba(255,255,255,0.0605)] active:bg-[rgba(255,255,255,0.0419)] disabled:text-[rgba(255,255,255,0.3628)] disabled:hover:bg-transparent",
+        "bg-caption-button hover:bg-caption-button-hover active:bg-caption-button-active",
         {
-          "hover:bg-[rgb(196_43_28)] active:bg-[rgb(196_42_28/0.9)]": identifier === "close",
+          "hover:bg-caption-button-close-hover active:bg-caption-button-close-active": identifier === "close",
         },
         className,
       )}

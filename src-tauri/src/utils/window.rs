@@ -62,11 +62,17 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
         );
 
     if let Some(transparent) = options.transparent {
-        window_builder = window_builder.transparent(transparent)
+        window_builder = window_builder.transparent(transparent);
     }
 
-    if let Some(decorations) = options.decorations {
-        window_builder = window_builder.decorations(decorations)
+    #[allow(unused_mut)]
+    if let Some(mut decorations) = options.decorations {
+        #[cfg(target_os = "macos")]
+        {
+            decorations = true;
+        }
+
+        window_builder = window_builder.decorations(decorations);
     }
 
     if let (Some(min_width), Some(min_height)) = (options.min_width, options.min_height) {
@@ -82,9 +88,11 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
     }
 
     #[cfg(target_os = "macos")]
-    let window_builder = window_builder
-        .title_bar_style(TitleBarStyle::Overlay)
-        .hidden_title(true);
+    {
+        window_builder = window_builder
+            .title_bar_style(TitleBarStyle::Overlay)
+            .hidden_title(true);
+    }
 
     let window = window_builder.build()?;
 

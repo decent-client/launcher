@@ -74,7 +74,7 @@ export default function SettingsLayout() {
           ))}
         </ul>
       </aside>
-      <Card className="relative overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-card/50 p-0 px-2">
+      <Card className="relative overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-background p-0 px-2">
         <ScrollArea className="grow overflow-hidden" scrollBarClassName="py-2">
           <Outlet />
         </ScrollArea>

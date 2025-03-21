@@ -29,7 +29,7 @@ export default function Launcher() {
 
   return (
     <Layout>
-      <Card className="flex flex-col gap-y-0 overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-card/50 p-0 px-2 pt-2">
+      <Card className="flex flex-col gap-y-0 overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-background p-0 px-2 pt-2">
         <Card
           className="relative grid h-64 shrink-0 rounded-md bg-[size:100%] bg-center p-1 transition-[background-size] duration-500 hover:bg-[size:105%] "
           style={{

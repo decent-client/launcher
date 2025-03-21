@@ -1,15 +1,13 @@
 import { setTheme as setAppTheme } from "@tauri-apps/api/app";
-import { Loader2Icon, MonitorIcon, MoonIcon, MoonStarIcon, SunIcon } from "lucide-react";
+import { Loader2Icon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { type JSX, createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "~/hooks/storage";
 
-export type Theme = "light" | "dark" | "oled" | "system";
-
-export const themes: Extract<Theme, "oled" | "system">[] = ["oled", "system"];
+export type Theme = "light" | "dark" | "system";
+export const themes: Theme[] = ["light", "dark", "system"];
 export const icons = {
   light: <SunIcon className="size-3.5" />,
   dark: <MoonIcon className="size-3.5" />,
-  oled: <MoonStarIcon className="size-3.5" />,
   system: <MonitorIcon className="size-3.5" />,
 };
 
@@ -28,10 +26,6 @@ const ThemeProviderContext = createContext<ThemeProviderState>({
 function resolveTheme(theme: Theme) {
   if (theme === "system") {
     return undefined;
-  }
-
-  if (theme === "oled") {
-    return "dark";
   }
 
   return theme;
