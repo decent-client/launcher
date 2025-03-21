@@ -19,7 +19,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
-            <Button className={cn("size-6.5", className)} variant={"ghost"} size={"icon"} suppressHydrationWarning>
+            <Button className={cn("size-6.5", className)} variant={"ghost"} size={"icon"}>
               {themeIcon}
             </Button>
           </DropdownMenuTrigger>
