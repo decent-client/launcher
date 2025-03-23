@@ -13,14 +13,14 @@ export const icons = {
 
 type ThemeProviderState = {
   theme: Theme;
-  resolvedTheme: () => Extract<Theme, "light" | "dark">;
+  backgroundImage: string;
   themeIcon: JSX.Element;
   setTheme: (theme: Theme) => void;
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
-  resolvedTheme: () => "light",
+  backgroundImage: "",
   themeIcon: <Loader2Icon className="size-3.5 animate-spin" />,
   setTheme: () => null,
 });
@@ -44,6 +44,7 @@ export function ThemeProvider({
 }) {
   const [theme, setTheme] = useLocalStorage(storageKey, defaultTheme);
   const [themeIcon, setIcon] = useState(<Loader2Icon className="size-3.5 animate-spin" />);
+  const [backgroundImage, setBackgroundImage] = useState("url(/images/launcher-background.png)");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -55,8 +56,20 @@ export function ThemeProvider({
       if (theme === "system") {
         resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         setIcon(icons[resolvedTheme]);
+
+        if (resolvedTheme === "light") {
+          setBackgroundImage("url(/images/launcher-background.png)");
+        } else {
+          setBackgroundImage("url(/images/launcher-background-dark.png)");
+        }
       } else {
         setIcon(icons[theme]);
+
+        if (theme === "light") {
+          setBackgroundImage("url(/images/launcher-background.png)");
+        } else {
+          setBackgroundImage("url(/images/launcher-background-dark.png)");
+        }
       }
 
       root.classList.add(resolvedTheme);
@@ -64,7 +77,7 @@ export function ThemeProvider({
     }
   }, [theme]);
 
-  function resolvedTheme() {
+  function resolvedTheme(theme: Theme) {
     if (typeof window !== "undefined") {
       if (theme === "system") {
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -80,7 +93,7 @@ export function ThemeProvider({
     <ThemeProviderContext.Provider
       value={{
         theme,
-        resolvedTheme,
+        backgroundImage,
         themeIcon,
         setTheme,
       }}
