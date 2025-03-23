@@ -13,12 +13,14 @@ export const icons = {
 
 type ThemeProviderState = {
   theme: Theme;
+  resolvedTheme: () => Extract<Theme, "light" | "dark">;
   themeIcon: JSX.Element;
   setTheme: (theme: Theme) => void;
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
+  resolvedTheme: () => "light",
   themeIcon: <Loader2Icon className="size-3.5 animate-spin" />,
   setTheme: () => null,
 });
@@ -62,10 +64,23 @@ export function ThemeProvider({
     }
   }, [theme]);
 
+  function resolvedTheme() {
+    if (typeof window !== "undefined") {
+      if (theme === "system") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+    } else {
+      return "light";
+    }
+
+    return theme;
+  }
+
   return (
     <ThemeProviderContext.Provider
       value={{
         theme,
+        resolvedTheme,
         themeIcon,
         setTheme,
       }}

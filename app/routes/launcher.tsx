@@ -9,6 +9,7 @@ import { Progress } from "~/components/ui/progress";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { usePlayerSkin } from "~/hooks/player-skin";
 import { cn } from "~/lib/utils";
+import { useTheme } from "~/providers/theme";
 
 export const handle = {
   breadcrumb: "Launcher",
@@ -24,6 +25,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function Launcher() {
+  const { resolvedTheme } = useTheme();
   const { skin, loading } = usePlayerSkin("a75000c85c0f4550a278780d2f37c745");
   const [launching, setLaunching] = useState(false);
 
@@ -31,9 +33,12 @@ export default function Launcher() {
     <Layout>
       <Card className="flex flex-col gap-y-0 overflow-hidden rounded-none rounded-ss-xl border-r-0 border-b-0 bg-background p-0 px-2 pt-2">
         <Card
-          className="relative grid h-64 shrink-0 rounded-md bg-[size:100%] bg-center p-1 transition-[background-size] duration-500 hover:bg-[size:105%] "
+          className="relative grid h-64 shrink-0 rounded-md bg-[size:100%] bg-[url(/images/launcher-background.png)] bg-center p-1 transition-[background-size] duration-500 hover:bg-[size:105%]"
           style={{
-            backgroundImage: "url(/images/launcher-background.png)",
+            backgroundImage:
+              resolvedTheme() === "light"
+                ? "url(/images/launcher-background.png)"
+                : "url(/images/launcher-background-dark.png)",
           }}
         >
           <span className="-bottom-1 absolute inset-x-8 z-20 h-2">
