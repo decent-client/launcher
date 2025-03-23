@@ -55,6 +55,7 @@ export function SettingsProvider({
 
     isResettingForm.current = true;
     form.reset(JSON.parse(content));
+    setSettings(JSON.parse(content));
     isResettingForm.current = false;
   }
 

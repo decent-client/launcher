@@ -2,6 +2,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type * as React from "react";
 
 import { cn } from "~/lib/utils";
+import { useSettings } from "~/providers/settings";
 
 function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
@@ -25,6 +26,10 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  const { settings } = useSettings();
+
+  console.log(settings);
+
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
@@ -33,11 +38,12 @@ function TooltipContent({
         className={cn(
           "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-200 w-fit animate-in text-balance rounded-md bg-background px-3 py-1.5 text-foreground text-xs data-[state=closed]:animate-out",
           className,
+          { hidden: !settings.advanced.displayTooltips },
         )}
         {...props}
       >
         {children}
-        {/* <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-background fill-background" /> */}
+        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-background fill-background" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

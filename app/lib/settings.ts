@@ -42,7 +42,21 @@ export const schema = z.object({
       richPresence: z.boolean(),
     }),
   }),
-  advanced: z.object({}),
+  advanced: z.object({
+    gameDirectory: z.string().optional(),
+    javaPath: z.string().optional(),
+    branch: z.string(),
+    updatePreferences: z.string(),
+    JVMArguments: z
+      .string()
+      .refine((value) => value === "" || /^-[\w\d]+(\s+-[\w\d]+)*$/.test(value), {
+        message: "Invalid JVM arguments format.",
+      })
+      .optional(),
+    hardwareAcceleration: z.boolean().default(true),
+    reducedAnimations: z.boolean().default(false),
+    displayTooltips: z.boolean().default(true),
+  }),
 });
 
 export const defaultSettings: Settings = {
@@ -62,5 +76,11 @@ export const defaultSettings: Settings = {
   notifications: {
     discord: { richPresence: true },
   },
-  advanced: {},
+  advanced: {
+    branch: "master",
+    updatePreferences: "normal",
+    hardwareAcceleration: true,
+    reducedAnimations: false,
+    displayTooltips: true,
+  },
 };
