@@ -37,7 +37,11 @@ export const schema = z.object({
         .default("auto"),
     }),
   }),
-  notifications: z.object({}),
+  notifications: z.object({
+    discord: z.object({
+      richPresence: z.boolean(),
+    }),
+  }),
   advanced: z.object({}),
 });
 
@@ -55,6 +59,8 @@ export const defaultSettings: Settings = {
       height: "auto",
     },
   },
-  notifications: {},
+  notifications: {
+    discord: { richPresence: true },
+  },
   advanced: {},
 };
