@@ -23,20 +23,20 @@ export default function Advanced() {
             name="advanced.gameDirectory"
             render={() => (
               <FormItem>
-                <div className="flex justify-between gap-4">
+                <fieldset className="flex justify-between gap-4">
                   <div>
-                    <FormLabel className="font-bold text-base leading-4">Game Directory</FormLabel>
+                    <FormLabel className="font-bold text-base">Game Directory</FormLabel>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <FormDescription>
+                        <FormDescription className="ml-1 flex items-center gap-x-1">
+                          <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
                           <button
                             type="button"
-                            className="ml-1 flex items-center gap-1 font-medium text-blue-500 leading-[0.8rem]"
+                            className="truncate font-medium text-blue-500"
                             onClick={(event) => {
                               event.preventDefault();
                             }}
                           >
-                            <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
                             {form.getValues("advanced.gameDirectory")}
                           </button>
                         </FormDescription>
@@ -49,26 +49,13 @@ export default function Advanced() {
                       className="min-w-40 gap-2 border border-input bg-accent/50 text-foreground hover:bg-accent/75"
                       onClick={(event) => {
                         event.preventDefault();
-
-                        async function handleSelect() {
-                          // const selected = await selectDirectory({
-                          //   directory: true,
-                          //   multiple: false,
-                          //   defaultPath: await configDir(),
-                          // });
-                          // if (!Array.isArray(selected) && selected !== null) {
-                          //   form.setValue("advanced.gameDirectory", selected);
-                          // }
-                        }
-
-                        handleSelect();
                       }}
                     >
                       <FolderIcon size={16} />
                       Browse
                     </Button>
                   </FormControl>
-                </div>
+                </fieldset>
                 <FormMessage />
               </FormItem>
             )}
@@ -78,20 +65,20 @@ export default function Advanced() {
             name="advanced.javaPath"
             render={() => (
               <FormItem>
-                <div className="flex justify-between gap-4">
+                <fieldset className="flex justify-between gap-4">
                   <div>
                     <FormLabel className="font-bold text-base">Java Path</FormLabel>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <FormDescription>
+                        <FormDescription className="ml-1 flex items-center gap-x-1">
+                          <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
                           <button
                             type="button"
-                            className="ml-1 flex items-center gap-1 font-medium text-blue-500 leading-[0.8rem]"
+                            className="truncate font-medium text-blue-500"
                             onClick={(event) => {
                               event.preventDefault();
                             }}
                           >
-                            <ChevronRightIcon className="stroke-muted-foreground" size={14} />
                             {form.getValues("advanced.javaPath")}
                           </button>
                         </FormDescription>
@@ -104,26 +91,13 @@ export default function Advanced() {
                       className="min-w-40 gap-2 border border-input bg-accent/50 text-foreground hover:bg-accent/75"
                       onClick={(event) => {
                         event.preventDefault();
-
-                        async function handleSelect() {
-                          // const selected = await selectDirectory({
-                          //   directory: true,
-                          //   multiple: false,
-                          //   defaultPath: await appDataDir(),
-                          // });
-                          // if (!Array.isArray(selected) && selected !== null) {
-                          //   form.setValue("advanced.javaPath", selected);
-                          // }
-                        }
-
-                        handleSelect();
                       }}
                     >
                       <FolderIcon size={16} />
                       Browse
                     </Button>
                   </FormControl>
-                </div>
+                </fieldset>
                 <FormMessage />
               </FormItem>
             )}
@@ -194,26 +168,23 @@ export default function Advanced() {
             </FormItem>
           )}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="advanced.hardwareAcceleration"
           render={({ field: { value, onChange } }) => (
-            <FormItem className="gap-y-0">
-              <div className="flex items-center gap-x-4">
-                <FormControl>
-                  <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
-                </FormControl>
-                <div className="flex flex-grow items-center justify-between">
-                  <FormLabel className="font-bold text-base">Hardware Acceleration</FormLabel>
-             
-                </div>
-              </div>
-              <FormDescription className="ml-[calc(36px+1rem)]">
-                Whether to use hardware acceleration for the launcher.
-                <br />
-                <span className="italic">Enabling this maybe effect your preformance.</span>
-              </FormDescription>
-              <FormMessage />
+            <FormItem className="flex gap-x-4 gap-y-0">
+              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
+                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
+              </FormControl>
+              <fieldset>
+                <FormLabel className="font-bold text-base">Hardware Acceleration</FormLabel>
+                <FormDescription>
+                  Whether to use hardware acceleration for the launcher.
+                  <br />
+                  <span className="italic">Enabling this maybe effect your preformance.</span>
+                </FormDescription>
+                <FormMessage />
+              </fieldset>
             </FormItem>
           )}
         />
@@ -221,49 +192,31 @@ export default function Advanced() {
           control={form.control}
           name="advanced.reducedAnimations"
           render={({ field: { value, onChange } }) => (
-            <FormItem className="space-y-0">
-              <div className="flex items-center gap-x-4">
-                <FormControl>
-                  <Switch
-                    className="data-[state=checked]:bg-green-500"
-                    checked={value}
-                    onCheckedChange={(checked) => {
-                      onChange(checked);
-                      //   debounceReload();
-                    }}
-                  />
-                </FormControl>
+            <FormItem className="flex gap-x-4 gap-y-0">
+              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
+                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
+              </FormControl>
+              <fieldset>
                 <FormLabel className="font-bold text-base">Reduce Animations</FormLabel>
-              </div>
-              <FormDescription className="ml-[calc(36px+1rem)]">
-                Whether the launcher should render animations.
-              </FormDescription>
-              <FormMessage />
+                <FormDescription>Whether the launcher should render animations.</FormDescription>
+                <FormMessage />
+              </fieldset>
             </FormItem>
           )}
-        /> */}
+        />
         <FormField
           control={form.control}
           name="advanced.displayTooltips"
           render={({ field: { value, onChange } }) => (
-            <FormItem className="space-y-0">
-              <div className="flex items-center gap-x-4">
-                <FormControl>
-                  <Switch
-                    className="data-[state=checked]:bg-green-500"
-                    checked={value}
-                    onCheckedChange={(checked) => {
-                      onChange(checked);
-                      //   debounceReload();
-                    }}
-                  />
-                </FormControl>
+            <FormItem className="flex gap-x-4 gap-y-0">
+              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
+                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
+              </FormControl>
+              <fieldset>
                 <FormLabel className="font-bold text-base">Display Tooltips</FormLabel>
-              </div>
-              <FormDescription className="ml-[calc(36px+1rem)]">
-                Whether the launcher should display helping tooltips.
-              </FormDescription>
-              <FormMessage />
+                <FormDescription> Whether the launcher should display helping tooltips.</FormDescription>
+                <FormMessage />
+              </fieldset>
             </FormItem>
           )}
         />

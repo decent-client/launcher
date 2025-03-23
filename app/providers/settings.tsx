@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { deepmerge } from "deepmerge-ts";
 import { createContext, useContext, useRef, useState } from "react";
 import { type UseFormReturn, useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -47,11 +48,11 @@ export function SettingsProvider({
   });
 
   const debounce = useDebouncedCallback(async (settings: Settings) => {
-    storeToTextFile(fileName, settings);
+    storeToTextFile(fileName, deepmerge(defaultSettings, settings));
   }, 200);
 
   async function resetForm() {
-    const content = await readTextFile(fileName, directory);
+    const content = deepmerge(defaultSettings, await readTextFile(fileName, directory));
 
     isResettingForm.current = true;
     form.reset(JSON.parse(content));
