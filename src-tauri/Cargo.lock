@@ -2492,7 +2492,7 @@ dependencies = [
  "tauri-plugin-single-instance",
  "tauri-plugin-system-info",
  "tauri-plugin-window-state",
- "thiserror 1.0.69",
+ "thiserror 2.0.12",
  "tokio",
  "url",
 ]
