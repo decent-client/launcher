@@ -60,7 +60,9 @@ export default function WindowTitleBar() {
             },
           )}
         >
-          <img className="my-auto mr-2 size-4" src="/app-icon.png" alt="App Icon" />
+          <li className="mr-2">
+            <img className="size-4" src="/app-icon.png" alt="App Icon" />
+          </li>
           <li>Decent Client</li>
           {breadcrumbs.map((crumb, index) => {
             return (
