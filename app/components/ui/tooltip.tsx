@@ -28,8 +28,6 @@ function TooltipContent({
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   const { settings } = useSettings();
 
-  console.log(settings);
-
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
