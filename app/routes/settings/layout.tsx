@@ -3,8 +3,8 @@ import { NavLink, Outlet, useLocation } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useSessionStorage } from "~/hooks/storage";
 import { cn } from "~/lib/utils";
+import { type SettingsTab, useSettings } from "~/providers/settings";
 
 export const handle = {
   breadcrumb: "Settings",
@@ -13,7 +13,7 @@ export const handle = {
 const tabs: {
   title: string;
   icon: React.ReactNode;
-  value: string;
+  value: SettingsTab;
 }[] = [
   {
     title: "Launcher",
@@ -43,7 +43,7 @@ const tabs: {
 ];
 
 export default function SettingsLayout() {
-  const [_, setSettingsTab] = useSessionStorage("settings-tab", "launcher");
+  const { setTab } = useSettings();
   const { pathname } = useLocation();
 
   return (
@@ -66,7 +66,7 @@ export default function SettingsLayout() {
               size={"sm"}
               asChild
             >
-              <NavLink to={`/settings/${tab.value}`} onClick={() => setSettingsTab(tab.value)}>
+              <NavLink to={`/settings/${tab.value}`} onClick={() => setTab(tab.value)}>
                 {tab.icon}
                 <span className="font-semibold text-base">{tab.title}</span>
               </NavLink>

@@ -1,5 +1,5 @@
 use log::error;
-use tauri::{AppHandle, Manager, RunEvent, WindowEvent};
+use tauri::{async_runtime, AppHandle, Manager, RunEvent, WindowEvent};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags, WindowExt};
 use tokio::time::{sleep, Duration};
 
@@ -31,15 +31,15 @@ pub fn run() {
         .setup(|app| {
             let app_handle = app.handle().clone();
 
-            let _ = core::msa_auth::create_minecraft_auth(app.handle().clone());
-
             let splash = utils::window::create_splash_screen_window(&app_handle)?;
 
-            tauri::async_runtime::spawn(async move {
+            async_runtime::spawn(async move {
                 sleep(Duration::from_secs(5)).await;
 
                 if let Ok(launcher) = utils::window::create_launcher_window(&app_handle) {
-                    let _ = WindowExt::restore_state(&launcher, StateFlags::all());
+                    // let _ = launcher.restore_state(StateFlags::all());
+                } else {
+                    error!("error while restoring launcher window state")
                 };
 
                 splash.destroy()

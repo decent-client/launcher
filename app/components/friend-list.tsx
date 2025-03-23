@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useSessionStorage } from "~/hooks/storage";
 import { cn } from "~/lib/utils";
+import { useSettings } from "~/providers/settings";
 import { SearchBar } from "./search-bar";
 
 const friends = [
@@ -105,7 +105,7 @@ export function FriendList({ className }: { className?: string }) {
 }
 
 function SettingsButton() {
-  const [settingsTab] = useSessionStorage("settings-tab", "preferences");
+  const { tab } = useSettings();
 
   return (
     <Button
@@ -114,7 +114,7 @@ function SettingsButton() {
       size={"sm"}
       asChild
     >
-      <Link to={`/settings/${settingsTab}`}>
+      <Link to={`/settings/${tab}`}>
         <SettingsIcon className="size-4" />
         <span className="font-medium text-base">Settings</span>
       </Link>

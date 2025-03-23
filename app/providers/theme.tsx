@@ -35,7 +35,6 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "theme",
-  ...props
 }: {
   children: React.ReactNode;
   defaultTheme?: Theme;
@@ -70,7 +69,6 @@ export function ThemeProvider({
         themeIcon,
         setTheme,
       }}
-      {...props}
     >
       {children}
     </ThemeProviderContext.Provider>

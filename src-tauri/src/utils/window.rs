@@ -1,7 +1,4 @@
-use tauri::{
-    window::{Effect, EffectsBuilder},
-    AppHandle, Error, WebviewUrl, WebviewWindow, WebviewWindowBuilder,
-};
+use tauri::{AppHandle, Error, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 
 #[cfg(target_os = "macos")]
 use tauri::TitleBarStyle;
@@ -39,7 +36,7 @@ impl Default for WindowOptions {
             resizable: Some(true),
             maximizable: Some(true),
             decorations: Some(false),
-            transparent: Some(true),
+            transparent: Some(false),
         }
     }
 }
@@ -49,17 +46,7 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
         .title(options.title)
         .inner_size(options.width, options.height)
         .resizable(options.resizable.unwrap())
-        .maximizable(options.maximizable.unwrap())
-        .effects(
-            EffectsBuilder::new()
-                .effects([
-                    Effect::Mica,
-                    Effect::Acrylic,
-                    Effect::Blur,
-                    Effect::FullScreenUI,
-                ])
-                .build(),
-        );
+        .maximizable(options.maximizable.unwrap());
 
     if let Some(transparent) = options.transparent {
         window_builder = window_builder.transparent(transparent);
