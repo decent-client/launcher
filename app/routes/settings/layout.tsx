@@ -55,10 +55,14 @@ export default function SettingsLayout() {
             <Button
               key={tab.value}
               className={cn(
-                "ml-8 h-7 w-full justify-start gap-3 rounded-s-full rounded-e-none transition-[margin] hover:ml-8.5",
+                "relative ml-8 h-7 w-full justify-start gap-3 rounded-s-full rounded-e-none transition-[margin] hover:ml-8.5",
                 {
-                  "ml-9 bg-accent/50 text-blue-500 hover:ml-10 hover:text-blue-500":
-                    pathname === `/settings/${tab.value}`,
+                  "ml-9 bg-accent text-blue-500 hover:ml-10 hover:text-blue-500": pathname === `/settings/${tab.value}`,
+                  "hover:bg-accent/50": pathname !== `/settings/${tab.value}`,
+                  "text-purple-500 hover:text-purple-500":
+                    tab.value === "advanced" && pathname === "/settings/advanced",
+                  "text-green-500 hover:text-green-500":
+                    tab.value === "resources" && pathname === "/settings/resources",
                   "mt-auto": tab.value === "resources",
                 },
               )}

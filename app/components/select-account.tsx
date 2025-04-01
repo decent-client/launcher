@@ -17,8 +17,10 @@ import { createMinecraftAuth } from "~/lib/bindings/msa-auth";
 import type { MinecraftAccount } from "~/lib/types/account";
 import { cn } from "~/lib/utils";
 import { useAccount } from "~/providers/account";
+import { useTheme } from "~/providers/theme";
 
 export function SelectAccount({ className }: { className?: string }) {
+  const { resolvedTheme } = useTheme();
   const { accounts } = useAccount();
   const { face, loading } = usePlayerSkin("a75000c85c0f4550a278780d2f37c745");
 
@@ -29,14 +31,13 @@ export function SelectAccount({ className }: { className?: string }) {
           <TooltipTrigger asChild>
             <Button
               className={cn("group h-7 justify-start has-[>svg]:px-1 has-[>svg]:pr-3", className)}
-              variant={"ghost"}
+              variant={resolvedTheme === "light" ? "secondary" : "ghost"}
             >
               {loading ? (
                 <Skeleton className="size-5 rounded-sm" />
               ) : (
                 <img className="size-5 rounded-sm" src={face} alt="Skin Face" />
               )}
-
               <span className="font-minecraft text-base leading-5">liqw</span>
               <ArrowRightIcon className="size-4 shrink-0 stroke-2.5 stroke-muted-foreground transition-transform group-hover:translate-x-1" />
             </Button>

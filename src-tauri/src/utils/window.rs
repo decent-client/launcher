@@ -1,7 +1,7 @@
 use tauri::{AppHandle, Error, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 
 #[cfg(target_os = "macos")]
-use tauri::TitleBarStyle;
+use tauri::{LogicalPosition, TitleBarStyle};
 
 pub struct WindowOptions {
     pub title: String,
@@ -78,7 +78,8 @@ pub fn create_window(app: &AppHandle, options: WindowOptions) -> Result<WebviewW
     {
         window_builder = window_builder
             .title_bar_style(TitleBarStyle::Overlay)
-            .hidden_title(true);
+            .hidden_title(true)
+            .traffic_light_position(LogicalPosition::new(24.0, 24.0));
     }
 
     let window = window_builder.build()?;

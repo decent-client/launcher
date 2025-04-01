@@ -1,3 +1,4 @@
+import { appDataDir, join } from "@tauri-apps/api/path";
 import { z } from "zod";
 import type { Settings } from "~/providers/settings";
 
@@ -53,11 +54,16 @@ export const schema = z.object({
         message: "Invalid JVM arguments format.",
       })
       .optional(),
-    hardwareAcceleration: z.boolean().default(true),
-    reducedAnimations: z.boolean().default(false),
-    displayTooltips: z.boolean().default(true),
+    displayTooltips: z.boolean(),
+    reducedAnimations: z.boolean(),
   }),
 });
+
+export async function defaultMinecraftPath() {
+  return await join(await appDataDir(), ".minecraft");
+}
+
+export async function defaultJavaPath() {}
 
 export const defaultSettings: Settings = {
   launcher: {
@@ -77,10 +83,11 @@ export const defaultSettings: Settings = {
     discord: { richPresence: true },
   },
   advanced: {
+    gameDirectory: undefined,
+    javaPath: undefined,
     branch: "master",
     updatePreferences: "normal",
-    hardwareAcceleration: true,
-    reducedAnimations: false,
     displayTooltips: true,
+    reducedAnimations: false,
   },
 };

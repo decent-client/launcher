@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import {} from "@tauri-apps/api/path";
 import { deepmerge } from "deepmerge-ts";
 import { createContext, useContext, useRef, useState } from "react";
 import { type UseFormReturn, useForm } from "react-hook-form";
@@ -52,11 +53,11 @@ export function SettingsProvider({
   }, 200);
 
   async function resetForm() {
-    const content = deepmerge(defaultSettings, await readTextFile(fileName, directory));
+    const content = deepmerge(defaultSettings, JSON.parse(await readTextFile(fileName, directory)));
 
     isResettingForm.current = true;
-    form.reset(JSON.parse(content));
-    setSettings(JSON.parse(content));
+    form.reset(content);
+    setSettings(content);
     isResettingForm.current = false;
   }
 
@@ -69,8 +70,8 @@ export function SettingsProvider({
 
     const { unsubscribe } = form.watch((values) => {
       if (!isResettingForm.current) {
-        debounce(values as Settings);
         setSettings(values as Settings);
+        debounce(values as Settings);
       }
     });
 

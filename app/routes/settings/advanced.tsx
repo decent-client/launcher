@@ -1,3 +1,4 @@
+import { open } from "@tauri-apps/plugin-dialog";
 import { ChevronRightIcon, FolderGit2Icon, FolderIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
@@ -11,8 +12,19 @@ export const handle = {
   breadcrumb: "Advanced",
 };
 
+function vaildatePath(path: string | undefined | null) {
+  if (!path || path === undefined || path === null || path === "") {
+    return false;
+  }
+
+  return true;
+}
+
 export default function Advanced() {
   const { form } = useSettings();
+
+  const gameDirectory = form.getValues("advanced.gameDirectory");
+  const javaPath = form.getValues("advanced.javaPath");
 
   return (
     <Form {...form}>
@@ -21,7 +33,7 @@ export default function Advanced() {
           <FormField
             control={form.control}
             name="advanced.gameDirectory"
-            render={() => (
+            render={({ field: { value, onChange } }) => (
               <FormItem>
                 <fieldset className="flex justify-between gap-4">
                   <div>
@@ -29,26 +41,38 @@ export default function Advanced() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <FormDescription className="ml-1 flex items-center gap-x-1">
-                          <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
-                          <button
-                            type="button"
-                            className="truncate font-medium text-blue-500"
-                            onClick={(event) => {
-                              event.preventDefault();
-                            }}
-                          >
-                            {form.getValues("advanced.gameDirectory")}
-                          </button>
+                          {vaildatePath(gameDirectory) ? (
+                            <>
+                              <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
+                              <button
+                                type="button"
+                                className="truncate font-medium text-blue-500"
+                                onClick={async (event) => {
+                                  event.preventDefault();
+                                }}
+                              >
+                                {gameDirectory}
+                              </button>
+                            </>
+                          ) : (
+                            <span className="-ml-1">Could not find game directory.</span>
+                          )}
                         </FormDescription>
                       </TooltipTrigger>
-                      <TooltipContent>Which directory to launch the game from.</TooltipContent>
+                      <TooltipContent side="bottom">Which directory to launch the game from.</TooltipContent>
                     </Tooltip>
                   </div>
                   <FormControl>
                     <Button
                       className="min-w-40 gap-2 border border-input bg-accent/50 text-foreground hover:bg-accent/75"
-                      onClick={(event) => {
+                      onClick={async (event) => {
                         event.preventDefault();
+
+                        const path = await open({ directory: true, multiple: false, defaultPath: value });
+
+                        if (path) {
+                          onChange(path);
+                        }
                       }}
                     >
                       <FolderIcon size={16} />
@@ -63,7 +87,7 @@ export default function Advanced() {
           <FormField
             control={form.control}
             name="advanced.javaPath"
-            render={() => (
+            render={({ field: { value, onChange } }) => (
               <FormItem>
                 <fieldset className="flex justify-between gap-4">
                   <div>
@@ -71,26 +95,38 @@ export default function Advanced() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <FormDescription className="ml-1 flex items-center gap-x-1">
-                          <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
-                          <button
-                            type="button"
-                            className="truncate font-medium text-blue-500"
-                            onClick={(event) => {
-                              event.preventDefault();
-                            }}
-                          >
-                            {form.getValues("advanced.javaPath")}
-                          </button>
+                          {vaildatePath(javaPath) ? (
+                            <>
+                              <ChevronRightIcon className="size-3.5 stroke-muted-foreground" />
+                              <button
+                                type="button"
+                                className="truncate font-medium text-blue-500"
+                                onClick={async (event) => {
+                                  event.preventDefault();
+                                }}
+                              >
+                                {javaPath}
+                              </button>
+                            </>
+                          ) : (
+                            <span className="-ml-1">Could not find the java path.</span>
+                          )}
                         </FormDescription>
                       </TooltipTrigger>
-                      <TooltipContent>Path to the Java executable.</TooltipContent>
+                      <TooltipContent side="bottom">Path to the Java executable.</TooltipContent>
                     </Tooltip>
                   </div>
                   <FormControl>
                     <Button
                       className="min-w-40 gap-2 border border-input bg-accent/50 text-foreground hover:bg-accent/75"
-                      onClick={(event) => {
+                      onClick={async (event) => {
                         event.preventDefault();
+
+                        const path = await open({ directory: true, multiple: false, defaultPath: value });
+
+                        if (path) {
+                          onChange(path);
+                        }
                       }}
                     >
                       <FolderIcon size={16} />
@@ -170,19 +206,15 @@ export default function Advanced() {
         />
         <FormField
           control={form.control}
-          name="advanced.hardwareAcceleration"
+          name="advanced.displayTooltips"
           render={({ field: { value, onChange } }) => (
             <FormItem className="flex gap-x-4 gap-y-0">
               <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
                 <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
               </FormControl>
               <fieldset>
-                <FormLabel className="font-bold text-base">Hardware Acceleration</FormLabel>
-                <FormDescription>
-                  Whether to use hardware acceleration for the launcher.
-                  <br />
-                  <span className="italic">Enabling this maybe effect your preformance.</span>
-                </FormDescription>
+                <FormLabel className="font-bold text-base">Display Tooltips</FormLabel>
+                <FormDescription> Whether the launcher should display helping tooltips.</FormDescription>
                 <FormMessage />
               </fieldset>
             </FormItem>
@@ -199,22 +231,6 @@ export default function Advanced() {
               <fieldset>
                 <FormLabel className="font-bold text-base">Reduce Animations</FormLabel>
                 <FormDescription>Whether the launcher should render animations.</FormDescription>
-                <FormMessage />
-              </fieldset>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="advanced.displayTooltips"
-          render={({ field: { value, onChange } }) => (
-            <FormItem className="flex gap-x-4 gap-y-0">
-              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
-                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
-              </FormControl>
-              <fieldset>
-                <FormLabel className="font-bold text-base">Display Tooltips</FormLabel>
-                <FormDescription> Whether the launcher should display helping tooltips.</FormDescription>
                 <FormMessage />
               </fieldset>
             </FormItem>

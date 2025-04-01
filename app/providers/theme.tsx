@@ -13,6 +13,7 @@ export const icons = {
 
 type ThemeProviderState = {
   theme: Theme;
+  resolvedTheme: "light" | "dark";
   backgroundImage: string;
   themeIcon: JSX.Element;
   setTheme: (theme: Theme) => void;
@@ -20,6 +21,7 @@ type ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>({
   theme: "system",
+  resolvedTheme: "light",
   backgroundImage: "",
   themeIcon: <Loader2Icon className="size-3.5 animate-spin" />,
   setTheme: () => null,
@@ -43,6 +45,7 @@ export function ThemeProvider({
   storageKey?: string;
 }) {
   const [theme, setTheme] = useLocalStorage(storageKey, defaultTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
   const [themeIcon, setIcon] = useState(<Loader2Icon className="size-3.5 animate-spin" />);
   const [backgroundImage, setBackgroundImage] = useState("url(/images/launcher-background.png)");
 
@@ -55,6 +58,7 @@ export function ThemeProvider({
 
       if (theme === "system") {
         resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        setResolvedTheme(resolvedTheme);
         setIcon(icons[resolvedTheme]);
 
         if (resolvedTheme === "light") {
@@ -64,6 +68,7 @@ export function ThemeProvider({
         }
       } else {
         setIcon(icons[theme]);
+        setResolvedTheme(theme);
 
         if (theme === "light") {
           setBackgroundImage("url(/images/launcher-background.png)");
@@ -77,22 +82,11 @@ export function ThemeProvider({
     }
   }, [theme]);
 
-  function resolvedTheme(theme: Theme) {
-    if (typeof window !== "undefined") {
-      if (theme === "system") {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-    } else {
-      return "light";
-    }
-
-    return theme;
-  }
-
   return (
     <ThemeProviderContext.Provider
       value={{
         theme,
+        resolvedTheme,
         backgroundImage,
         themeIcon,
         setTheme,

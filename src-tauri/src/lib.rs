@@ -28,6 +28,7 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::new().build())
         .plugin(tauri_plugin_system_info::init())
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let app_handle = app.handle().clone();
 
@@ -37,10 +38,9 @@ pub fn run() {
                 sleep(Duration::from_secs(5)).await;
 
                 if let Ok(launcher) = utils::window::create_launcher_window(&app_handle) {
+                    let _ = launcher;
                     // let _ = launcher.restore_state(StateFlags::all());
-                } else {
-                    error!("error while restoring launcher window state")
-                };
+                }
 
                 splash.destroy()
             });
@@ -57,7 +57,7 @@ pub fn run() {
         .plugin(core::player_skin::init())
         .invoke_handler(tauri::generate_handler![
             restart_app,
-            core::msa_auth::create_minecraft_auth
+            // core::msa_auth::create_minecraft_auth
         ]);
 
     let app = builder.build(tauri::generate_context!());

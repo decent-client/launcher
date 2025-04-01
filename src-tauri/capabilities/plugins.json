@@ -14,6 +14,7 @@
       "identifier": "fs:scope",
       "allow": [{ "path": "$APPDATA" }, { "path": "$APPDATA/**" }]
     },
+    "dialog:default",
     "player-skin:default"
   ]
 }

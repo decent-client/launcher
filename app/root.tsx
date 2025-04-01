@@ -1,9 +1,8 @@
 import { Links, type LinksFunction, Meta, Outlet, Scripts, isRouteErrorResponse } from "react-router";
 import { Providers } from "~/providers";
-import type { Route } from "./+types/root";
-
 import sonner from "~/styles/sonner.css?url";
 import tailwind from "~/styles/tailwind.css?url";
+import type { Route } from "./+types/root";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
@@ -20,17 +19,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="relative flex h-screen flex-col overflow-hidden font-sans antialiased">
-        <Providers>
-          {children}
-          <Scripts />
-        </Providers>
+        {children}
+        <Scripts />
       </body>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <Providers>
+      <Outlet />
+    </Providers>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
