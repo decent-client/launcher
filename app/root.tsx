@@ -1,8 +1,9 @@
 import { Links, type LinksFunction, Meta, Outlet, Scripts, isRouteErrorResponse } from "react-router";
 import { Providers } from "~/providers";
+import type { Route } from "./+types/root";
+
 import sonner from "~/styles/sonner.css?url";
 import tailwind from "~/styles/tailwind.css?url";
-import type { Route } from "./+types/root";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },

@@ -1,4 +1,5 @@
-import { ArrowRightIcon, CheckIcon, ExternalLinkIcon, PlusIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, PlusIcon, XIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { MicrosoftIcon } from "~/components/icons/microsoft";
 import { Button } from "~/components/ui/button";
 import {
@@ -21,8 +22,8 @@ import { useTheme } from "~/providers/theme";
 
 export function SelectAccount({ className }: { className?: string }) {
   const { resolvedTheme } = useTheme();
-  const { accounts } = useAccount();
-  const { face, loading } = usePlayerSkin("a75000c85c0f4550a278780d2f37c745");
+  const { account, accounts } = useAccount();
+  const { face, loading } = usePlayerSkin(account?.uuid);
 
   return (
     <Dialog>
@@ -30,7 +31,7 @@ export function SelectAccount({ className }: { className?: string }) {
         <DialogTrigger asChild>
           <TooltipTrigger asChild>
             <Button
-              className={cn("group h-7 justify-start has-[>svg]:px-1 has-[>svg]:pr-3", className)}
+              className={cn("group h-7 justify-start has-[>svg]:px-1 has-[>svg]:pr-4", className)}
               variant={resolvedTheme === "light" ? "secondary" : "ghost"}
             >
               {loading ? (
@@ -38,8 +39,8 @@ export function SelectAccount({ className }: { className?: string }) {
               ) : (
                 <img className="size-5 rounded-sm" src={face} alt="Skin Face" />
               )}
-              <span className="font-minecraft text-base leading-5">liqw</span>
-              <ArrowRightIcon className="size-4 shrink-0 stroke-2.5 stroke-muted-foreground transition-transform group-hover:translate-x-1" />
+              <span className="font-minecraft text-base leading-5">{account ? account.username : "Guest"}</span>
+              <ArrowRightIcon className="size-4 shrink-0 translate-x-1 stroke-2.5 stroke-muted-foreground transition-transform group-hover:translate-x-2" />
             </Button>
           </TooltipTrigger>
         </DialogTrigger>
@@ -61,18 +62,10 @@ export function SelectAccount({ className }: { className?: string }) {
           )}
         </div>
         <DialogFooter>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button className="w-full gap-2" variant={"secondary"} onClick={() => createMinecraftAuth()}>
-                <PlusIcon className="size-4" />
-                <span className="text-base">Add another Account</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="flex gap-x-2" side="bottom">
-              Microsoft Authentication
-              <ExternalLinkIcon className="size-3.5 stroke-accent-foreground" />
-            </TooltipContent>
-          </Tooltip>
+          <Button className="w-full gap-2" variant={"secondary"} onClick={() => createMinecraftAuth()}>
+            <PlusIcon className="size-4" />
+            <span className="text-base">{accounts.length > 0 ? "Add another account" : "Add account"}</span>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -80,39 +73,36 @@ export function SelectAccount({ className }: { className?: string }) {
 }
 
 function AccountRow({ account }: { account: MinecraftAccount }) {
+  const { face } = usePlayerSkin(account.uuid);
+  const { setAccount, removeAccount } = useAccount();
+
   return (
-    <fieldset key={account.uuid} className="grid overflow-hidden rounded-md">
+    <motion.fieldset
+      key={account.uuid}
+      className="grid overflow-hidden rounded-md"
+      initial={{ gridTemplateColumns: "1fr 0rem" }}
+      whileHover={{
+        gridTemplateColumns: "1fr 2.25rem",
+      }}
+    >
       <Button
         className={cn(
-          "group/account relative w-full justify-start gap-2.5 pl-1.5",
+          "relative w-full justify-start gap-2 pl-1.5 has-[>svg]:pl-1.5",
           account.active && "bg-blue-500/25 hover:bg-blue-500/50",
         )}
         variant={"ghost"}
         size={"sm"}
-        // onClick={() => {
-        // 	setSelectedAccount(account);
-        // }}
+        onClick={() => {
+          setAccount(account);
+        }}
       >
-        <img
-          // src={headTexture}
-          className="rounded-sm"
-          alt="Face"
-          width={20}
-          height={20}
-        />
-        <span className="font-minecraft text-base transition-[margin] group-hover/account:ml-1">
-          {account.username}
-        </span>
+        <img src={face} className="rounded-sm" alt="Face" width={20} height={20} />
+        <span className="font-minecraft text-base">{account.username}</span>
         {account.active && <CheckIcon className="absolute right-4" strokeWidth={2.5} size={16} />}
       </Button>
-      {/* <Button
-				className="ml-1 size-8 p-0"
-				variant={"secondary"}
-				size={"sm"}
-				onClick={() => removeAccount(account)}
-			>
-				<XIcon className=" stroke-red-500" strokeWidth={2.5} size={16} />
-			</Button> */}
-    </fieldset>
+      <Button className="ml-1 size-8 p-0" variant={"secondary"} size={"sm"} onClick={() => removeAccount(account)}>
+        <XIcon className="size-4 stroke-red-500" />
+      </Button>
+    </motion.fieldset>
   );
 }

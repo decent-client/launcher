@@ -1,7 +1,7 @@
 import { app } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
-import { storeAccounts } from "../account";
-import type { MinecraftAccount } from "../types/account";
+import { storeAccounts } from "~/lib/account";
+import type { MinecraftAccount } from "~/lib/types/account";
 
 export async function createMinecraftAuth(): Promise<unknown> {
   const respone = await invoke("create_minecraft_auth", { app });
