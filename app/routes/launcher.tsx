@@ -122,7 +122,7 @@ export default function Launcher() {
           <span className="-bottom-1 absolute inset-x-8 z-20 h-2">
             <Progress
               className={cn(
-                "-translate-y-1/2 absolute top-1/2 h-0 bg-border opacity-0 transition-all delay-200 duration-500 *:bg-green-400",
+                "-translate-y-1/2 absolute top-1/2 h-0 bg-border opacity-0 shadow transition-all delay-200 duration-500 *:bg-blue-500",
                 {
                   "h-2 opacity-100": launching,
                 },
@@ -216,20 +216,13 @@ export default function Launcher() {
               </SelectContent>
             </Select>
           </motion.nav>
-          <motion.section
-            className="mt-2 mb-4 grid grid-cols-2 gap-2 rounded-[inherit] lg:grid-cols-3 xl:grid-cols-4"
-            variants={{
-              full: { marginLeft: 0, marginRight: 0 },
-              shrunk: { marginLeft: "0.75rem", marginRight: "0.75rem" },
-            }}
-            animate={scrolled ? "full" : "shrunk"}
-          >
+          <section className="mx-3 mt-2 mb-5 grid grid-cols-2 gap-2 rounded-[inherit] lg:grid-cols-3 xl:grid-cols-4">
             {ARTICELS.map((article, index) => (
               <Card key={`${article.index}+${Math.random()}`} className="aspect-[24/10] p-0">
                 {index}
               </Card>
             ))}
-          </motion.section>
+          </section>
         </ScrollArea>
       </Card>
     </SidebarLayout>

@@ -49,11 +49,11 @@ export default function WindowTitleBar() {
 
   return (
     <>
-      <header className="relative z-100 flex h-(--title-bar-height) w-screen" data-tauri-drag-region>
+      <header className="relative flex h-(--title-bar-height) w-screen" data-tauri-drag-region>
         {pathname !== "/" && osType === "windows" && <CaptionButton icon={<Back />} onClick={() => navigate("/")} />}
         <ul
           className={cn(
-            "font-(family-name:--font-segoe-ui) pointer-events-none flex items-center gap-x-2 whitespace-nowrap text-base",
+            "font-(family-name:--font-segoe-ui) pointer-events-none z-100 flex items-center gap-x-2 whitespace-nowrap text-base",
             {
               "-translate-1/2 absolute top-1/2 left-1/2": osType !== "windows",
               "ml-4": osType === "windows",
@@ -83,7 +83,7 @@ export default function WindowTitleBar() {
           <ThemeToggle />
           <Notifications />
         </TitleBarMenu>
-        <CaptionControlGroup>
+        <CaptionControlGroup className="z-100">
           {buttons.map((button) => (
             <CaptionButton key={button.key} identifier={button.key} icon={button.icon} onClick={button.onClick} />
           ))}

@@ -51,6 +51,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      console.log(window);
       const root = window.document.documentElement;
       let resolvedTheme = theme;
 

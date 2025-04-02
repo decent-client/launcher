@@ -53,11 +53,8 @@ export function AccountProvider({
   async function removeAccount(account: MinecraftAccount) {
     const filteredAccounts = [...accounts].filter((v) => v !== account);
 
-    if (account.active) {
-      if (filteredAccounts.length > 0) {
-        filteredAccounts[0].active = true;
-      }
-      setActiveAccount(filteredAccounts[0]);
+    if (account.active && filteredAccounts.length > 0) {
+      filteredAccounts[0].active = true;
     }
 
     try {
