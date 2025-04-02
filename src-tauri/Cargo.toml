@@ -33,7 +33,7 @@ tauri-plugin-single-instance = "2.2.2"
 tauri-plugin-system-info = "2.0.9"
 tauri-plugin-os = "2.2.1"
 tauri-plugin-fs = "2.2.0"
-tauri-plugin-window-state = "2.2.1"
+tauri-plugin-window-state = "2.2.2"
 tauri-plugin-dialog = "2.2.0"
 
 minecraft-msa-auth = "0.4.0"
