@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import { usePlayerSkin } from "~/hooks/player-skin";
-import { createMinecraftAuth } from "~/lib/bindings/msa-auth";
+import { microsoftAuth } from "~/lib/bindings/msa-auth";
 import type { MinecraftAccount } from "~/lib/types/account";
 import { cn } from "~/lib/utils";
 import { useAccount } from "~/providers/account";
@@ -62,7 +62,7 @@ export function SelectAccount({ className }: { className?: string }) {
           )}
         </div>
         <DialogFooter>
-          <Button className="w-full gap-2" variant={"secondary"} onClick={() => createMinecraftAuth()}>
+          <Button className="w-full gap-2" variant={"secondary"} onClick={() => microsoftAuth()}>
             <PlusIcon className="size-4" />
             <span className="text-base">{accounts.length > 0 ? "Add another account" : "Add account"}</span>
           </Button>
