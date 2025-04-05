@@ -1,5 +1,5 @@
 import {} from "@tauri-apps/plugin-fs";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAsyncEffect } from "~/hooks/async-effect";
 import { getAccounts, storeAccounts } from "~/lib/account";
@@ -23,9 +23,11 @@ export function AccountProvider({
 }: { children: React.ReactNode; fileName?: FileName }) {
   const [accounts, setAccounts] = useState<MinecraftAccount[]>([]);
   const [account, setActiveAccount] = useState<MinecraftAccount>();
+  const accountsLoaded = useRef(false);
 
   useAsyncEffect(async () => {
     setAccounts(await getAccounts(fileName));
+    accountsLoaded.current = true;
   }, []);
 
   useEffect(() => {
@@ -34,7 +36,9 @@ export function AccountProvider({
       setActiveAccount(activeAccount);
     }
 
-    storeAccounts(fileName, accounts);
+    if (accountsLoaded.current) {
+      storeAccounts(fileName, accounts);
+    }
   }, [fileName, accounts]);
 
   function selectAccount(target: MinecraftAccount) {

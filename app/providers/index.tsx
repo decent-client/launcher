@@ -5,6 +5,7 @@ import { TooltipProvider } from "~/components/ui/tooltip";
 import { AccountProvider } from "~/providers/account";
 import { AppWindowProvider } from "~/providers/app-window";
 import { BreadcrumbProvider } from "~/providers/breadcrumbs";
+import { GameOptionsProvider } from "~/providers/game-options";
 import { SettingsProvider, useSettings } from "~/providers/settings";
 import { ThemeProvider } from "~/providers/theme";
 
@@ -16,14 +17,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider>
         <BreadcrumbProvider>
           <SettingsProvider>
-            <AccountProvider>
-              <TooltipProvider>
-                <ReduceMotionConfig>
-                  {children}
-                  <Toaster />
-                </ReduceMotionConfig>
-              </TooltipProvider>
-            </AccountProvider>
+            <GameOptionsProvider>
+              <AccountProvider>
+                <TooltipProvider>
+                  <ReduceMotionConfigProvider>
+                    {children}
+                    <Toaster />
+                  </ReduceMotionConfigProvider>
+                </TooltipProvider>
+              </AccountProvider>
+            </GameOptionsProvider>
           </SettingsProvider>
         </BreadcrumbProvider>
       </ThemeProvider>
@@ -31,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ReduceMotionConfig({ children }: { children: React.ReactNode }) {
+function ReduceMotionConfigProvider({ children }: { children: React.ReactNode }) {
   const [reduceMotion, setReduceMotion] = useState<ReducedMotionConfig>("user");
   const { settings } = useSettings();
 

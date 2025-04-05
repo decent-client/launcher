@@ -3,6 +3,7 @@ use tauri::{async_runtime, AppHandle, Manager, RunEvent, WindowEvent};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags, WindowExt};
 use tokio::time::{sleep, Duration};
 
+mod commands;
 mod core;
 mod utils;
 
@@ -53,11 +54,10 @@ pub fn run() {
             }
             _ => {}
         })
-        // .plugin(core::msa_auth::init())
         .plugin(core::player_skin::init())
         .invoke_handler(tauri::generate_handler![
             restart_app,
-            // core::msa_auth::create_minecraft_auth
+            commands::auth::microsoft_auth
         ]);
 
     let app = builder.build(tauri::generate_context!());

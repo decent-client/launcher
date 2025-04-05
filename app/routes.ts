@@ -12,6 +12,12 @@ export default [
         route("resources", "routes/settings/resources.tsx"),
       ]),
     ]),
+    layout("routes/game-options/layout.tsx", [
+      ...prefix("game-options", [
+        route("version", "routes/game-options/version.tsx"),
+        route("mods", "routes/game-options/mods.tsx"),
+      ]),
+    ]),
   ]),
   route("splash-screen", "routes/splash-screen.tsx"),
 ] satisfies RouteConfig;

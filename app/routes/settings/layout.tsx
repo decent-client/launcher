@@ -50,7 +50,7 @@ export default function SettingsLayout() {
     <main className="grid h-screen grid-cols-(--grid-layout) overflow-hidden">
       <aside className="relative mt-2 mb-8 flex flex-col overflow-hidden">
         <h1 className="ml-8 w-full font-extrabold font-sans text-xl">Settings</h1>
-        <ul className="flex grow flex-col gap-y-0.5">
+        <ul className="mt-1.5 flex grow flex-col gap-y-0.5">
           {tabs.map((tab) => (
             <Button
               key={tab.value}

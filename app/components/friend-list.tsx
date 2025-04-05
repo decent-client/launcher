@@ -75,7 +75,7 @@ export function FriendList({ className }: { className?: string }) {
                 return (
                   <CommandItem
                     key={friend.username}
-                    className="group grid h-7 cursor-pointer grid-cols-(--grid-friend-item) grid-rows-[--grid-friend-item-row] items-start gap-0 gap-x-2 overflow-hidden rounded-e-none p-1 transition-all aria-selected:ml-0.5 aria-selected:h-11"
+                    className="group grid h-7 cursor-pointer grid-cols-(--grid-friend-item) grid-rows-[--grid-friend-item-row] items-start gap-0 gap-x-2 rounded-e-none p-1 transition-all aria-selected:ml-0.5 aria-selected:h-11"
                     keywords={keywords}
                   >
                     <img src={friend.skin} className="z-50 size-5 rounded-sm" alt="Skin" />
