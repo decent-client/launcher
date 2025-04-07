@@ -1,4 +1,5 @@
 <h1 align="center">Decent Client - Launcher 🚀</h1>
+<div align="center">![Launcher preview](public/screenshots/launcher-preview.png)</div>
 
 ## Features 
 
