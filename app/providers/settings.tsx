@@ -20,6 +20,7 @@ type SettingsProviderState = {
   settings: Settings;
   tab: SettingsTab;
   setTab: (tab: SettingsTab) => void;
+  settingsLoaded: boolean;
 };
 
 const SettingsProviderContext = createContext<SettingsProviderState>({
@@ -27,6 +28,7 @@ const SettingsProviderContext = createContext<SettingsProviderState>({
   settings: defaultSettings,
   tab: "launcher",
   setTab: () => null,
+  settingsLoaded: false,
 });
 
 export function SettingsProvider({
@@ -41,6 +43,7 @@ export function SettingsProvider({
   const [settings, setSettings] = useState(defaults);
   const [tab, setTab] = useSessionStorage<SettingsTab>("settings-tab", "launcher");
   const isResettingForm = useRef(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
 
   const form = useForm<Settings>({
     resolver: zodResolver(schema),
@@ -52,13 +55,14 @@ export function SettingsProvider({
     storeToTextFile(fileName, deepmerge(defaultSettings, settings));
   }, 200);
 
-  async function resetForm() {
+  async function initializeSettings() {
     const content = deepmerge(defaultSettings, JSON.parse(await readTextFile(fileName, directory)));
 
     isResettingForm.current = true;
     form.reset(content);
     setSettings(content);
     isResettingForm.current = false;
+    setSettingsLoaded(true);
   }
 
   useAsyncEffect(async () => {
@@ -66,7 +70,7 @@ export function SettingsProvider({
       await storeToTextFile(fileName, defaultSettings);
     }
 
-    resetForm();
+    initializeSettings();
 
     const { unsubscribe } = form.watch((values) => {
       if (!isResettingForm.current) {
@@ -79,7 +83,7 @@ export function SettingsProvider({
   }, []);
 
   return (
-    <SettingsProviderContext.Provider value={{ form, settings, tab, setTab }}>
+    <SettingsProviderContext.Provider value={{ form, settings, tab, setTab, settingsLoaded }}>
       {children}
     </SettingsProviderContext.Provider>
   );

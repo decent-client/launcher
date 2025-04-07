@@ -2,6 +2,10 @@ import { appDataDir, join } from "@tauri-apps/api/path";
 import { z } from "zod";
 import type { Settings } from "~/providers/settings";
 
+const gameOptions = z.object({
+  version: z.string(),
+});
+
 export const schema = z.object({
   launcher: z.object({ language: z.string(), autoBoot: z.boolean(), exitToDock: z.boolean() }),
   preferences: z.object({
@@ -39,6 +43,8 @@ export const schema = z.object({
     }),
   }),
   notifications: z.object({
+    friendsOnline: z.boolean(),
+    friendsPlaying: z.boolean(),
     discord: z.object({
       richPresence: z.boolean(),
     }),
@@ -57,6 +63,7 @@ export const schema = z.object({
     displayTooltips: z.boolean(),
     reducedAnimations: z.boolean(),
   }),
+  gameOptions,
 });
 
 export async function defaultMinecraftPath() {
@@ -80,7 +87,11 @@ export const defaultSettings: Settings = {
     },
   },
   notifications: {
-    discord: { richPresence: true },
+    friendsOnline: true,
+    friendsPlaying: true,
+    discord: {
+      richPresence: true,
+    },
   },
   advanced: {
     gameDirectory: undefined,
@@ -89,5 +100,8 @@ export const defaultSettings: Settings = {
     updatePreferences: "normal",
     displayTooltips: true,
     reducedAnimations: false,
+  },
+  gameOptions: {
+    version: "1.8.9",
   },
 };

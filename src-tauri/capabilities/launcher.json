@@ -1,11 +1,12 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "plugins",
-  "description": "enables the permissions for plugins",
+  "identifier": "launcher",
+  "description": "enables the permissions for the launcher",
   "windows": ["launcher"],
   "permissions": [
     "system-info:allow-all",
     "os:default",
+    "os:allow-os-type",
     "fs:default",
     "fs:allow-read-text-file",
     "fs:allow-write-text-file",

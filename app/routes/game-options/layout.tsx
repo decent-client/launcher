@@ -5,6 +5,10 @@ import { Card } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
 import { type GameOptionsTab, useGameOptions } from "~/providers/game-options";
 
+export const handle = {
+  breadcrumb: "Game Options",
+};
+
 const tabs: {
   title: string;
   icon: React.ReactNode;

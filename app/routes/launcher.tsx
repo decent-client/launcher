@@ -1,4 +1,4 @@
-import { Gamepad2Icon, RocketIcon } from "lucide-react";
+import { ExternalLinkIcon, Gamepad2Icon, RocketIcon } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useRef, useState } from "react";
 import { Link } from "react-router";
@@ -7,7 +7,15 @@ import { SelectAccount } from "~/components/select-account";
 import { SkinViewer3D } from "~/components/skin-viewer";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { usePlayerSkin } from "~/hooks/player-skin";
@@ -106,6 +114,10 @@ export default function Launcher() {
             </Button>
             <motion.span
               className="-translate-x-1/2 absolute left-1/2"
+              initial={{
+                top: "1.5rem",
+                opacity: 1,
+              }}
               variants={{
                 show: {
                   top: "1.5rem",
@@ -154,6 +166,12 @@ export default function Launcher() {
         <ScrollArea ref={scrollAreaRef} className="relative grow overflow-hidden" scrollBarClassName="py-2">
           <motion.nav
             className="sticky z-20 flex items-center justify-between rounded-lg py-1 pr-1 pl-4 backdrop-blur-sm"
+            initial={{
+              top: "0.25rem",
+              backgroundColor: "color-mix(in oklab, var(--accent) 0%, transparent)",
+              marginLeft: 0,
+              marginRight: "0.75rem",
+            }}
             variants={{
               active: {
                 top: "0.75rem",
@@ -183,9 +201,11 @@ export default function Launcher() {
             </Select>
           </motion.nav>
           <section className="mx-3 mt-2 mb-5 grid grid-cols-2 gap-2 rounded-[inherit] lg:grid-cols-3 xl:grid-cols-4">
-            {ARTICELS.map((article) => (
-              <NewsArticle key={article.title} article={article} />
-            ))}
+            {[...ARTICELS]
+              .sort(() => (sortOption === "latest" ? 1 : -1))
+              .map((article) => (
+                <NewsArticle key={article.title} article={article} />
+              ))}
           </section>
         </ScrollArea>
       </Card>
@@ -206,10 +226,17 @@ function NewsArticle({ article }: { article: Article }) {
           <h1 className="absolute bottom-1 left-3 z-10 font-bold">{article.title}</h1>
         </Card>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{article.title}</DialogTitle>
+          <DialogDescription>description</DialogDescription>
         </DialogHeader>
+        <div>content</div>
+        <DialogFooter>
+          <Button variant={"secondary"} size={"sm"}>
+            View full article <ExternalLinkIcon className="size-4" />
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

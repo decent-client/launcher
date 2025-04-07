@@ -12,7 +12,38 @@ export default function Notifications() {
   return (
     <Form {...form}>
       <form className="flex flex-col space-y-8 px-8 py-7">
-        <span>*notification settings*</span>
+        <FormField
+          control={form.control}
+          name="notifications.friendsOnline"
+          render={({ field: { value, onChange } }) => (
+            <FormItem className="flex gap-x-4 gap-y-0">
+              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
+                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
+              </FormControl>
+              <fieldset>
+                <FormLabel className="font-bold text-base">Friends Online</FormLabel>
+                <FormDescription>Notify when friends appear online.</FormDescription>
+                <FormMessage />
+              </fieldset>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="notifications.friendsPlaying"
+          render={({ field: { value, onChange } }) => (
+            <FormItem className="flex gap-x-4 gap-y-0">
+              <FormControl className="mt-[calc((1.5rem-1.15rem)/2)]">
+                <Switch className="data-[state=checked]:bg-green-500" checked={value} onCheckedChange={onChange} />
+              </FormControl>
+              <fieldset>
+                <FormLabel className="font-bold text-base">Friends Playing</FormLabel>
+                <FormDescription>Notify when friends starts playing.</FormDescription>
+                <FormMessage />
+              </fieldset>
+            </FormItem>
+          )}
+        />
         <fieldset className="flex flex-col space-y-4">
           <h1 className="font-bold text-lg">Discord Settings</h1>
           <FormField

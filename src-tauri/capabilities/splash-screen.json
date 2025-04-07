@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "splash-screen",
+  "description": "enables the permissions for the splash-screen",
+  "windows": ["splash-screen"],
+  "permissions": [
+    "os:default",
+    "fs:default",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-create",
+    "player-skin:default"
+  ]
+}
