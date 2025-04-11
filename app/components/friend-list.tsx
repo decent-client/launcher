@@ -36,16 +36,16 @@ const friends = [
   },
 ];
 
-export function FriendList({ className }: { className?: string }) {
+export function FriendList({ className, ...rest }: { className?: string }) {
   const onlineFriends = friends.filter((friend) => friend.online).length;
 
   return (
-    <aside className={cn("relative mt-2 mb-8 flex flex-col overflow-hidden", className)}>
+    <aside className={cn("relative mt-2 mb-8 flex flex-col overflow-hidden", className)} {...rest}>
       <h1 className="ml-8 w-full font-extrabold font-sans text-xl">Friend List</h1>
       <Button className="absolute top-0 right-2 size-7" size={"icon"} variant={"ghost"}>
         <Plus className="size-4.5 stroke-3" />
       </Button>
-      <Command className="mt-0.5 mb-2 w-auto bg-transparent" loop>
+      <Command className="mt-0.5 mb-2 w-auto bg-transparent" value="deselected" loop>
         <SearchBar
           className="mr-2 ml-5.5 bg-card/50"
           input={
