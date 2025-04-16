@@ -27,7 +27,7 @@ thiserror = "2.0.12"
 chrono = { version = "0.4.31", features = ["serde"] }
 url = "2.5.0"
 
-tauri = { version = "2.4.1", features = [] }
+tauri = { version = "2.5.0", features = [] }
 tauri-plugin-log = "2.3.1"
 tauri-plugin-single-instance = "2.2.3"
 tauri-plugin-system-info = "2.0.9"
