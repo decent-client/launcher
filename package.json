@@ -7,7 +7,8 @@
     "dev": "react-router dev",
     "build": "react-router build",
     "tauri": "tauri",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "prepare": "husky"
   },
   "dependencies": {
     "@react-router/node": "^7.9.5",
@@ -20,6 +21,7 @@
     "react-router": "^7.9.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.2",
     "@react-router/dev": "^7.9.5",
     "@tailwindcss/vite": "^4.1.16",
     "@tauri-apps/cli": "^2",
@@ -27,6 +29,8 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
