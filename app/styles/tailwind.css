@@ -49,6 +49,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-caption-button: var(--caption-button);
+  --color-caption-button-hover: var(--caption-button-hover);
+  --color-caption-button-active: var(--caption-button-active);
+  --color-caption-button-close-hover: var(--caption-button-close-hover);
+  --color-caption-button-close-active: var(--caption-button-close-active);
 }
 
 :root {
@@ -84,6 +90,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --caption-button: transparent;
+  --caption-button-hover: oklch(0.92 0 0);
+  --caption-button-active: oklch(0.87 0 0);
+  --caption-button-close-hover: oklch(0.58 0.22 27);
+  --caption-button-close-active: oklch(0.51 0.19 28);
 }
 
 .dark {
@@ -118,6 +130,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --caption-button-hover: oklch(0.27 0 0);
+  --caption-button-active: oklch(0.37 0 0);
 }
 
 @layer base {
