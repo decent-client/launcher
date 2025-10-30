@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --minecraft-black: #000000;
+  --minecraft-dark-blue: #0000aa;
+  --minecraft-dark-green: #00aa00;
+  --minecraft-dark-aqua: #00aaaa;
+  --minecraft-dark-red: #aa0000;
+  --minecraft-dark-purple: #aa00aa;
+  --minecraft-gold: #ffaa00;
+  --minecraft-gray: #aaaaaa;
+  --minecraft-dark-gray: #555555;
+  --minecraft-blue: #5555ff;
+  --minecraft-green: #55ff55;
+  --minecraft-aqua: #55ffff;
+  --minecraft-red: #ff5555;
+  --minecraft-light-purple: #ff55ff;
+  --minecraft-yellow: #ffff55;
+  --minecraft-white: #ffffff;
+
+  --minecraft-black-shadow: #000000;
+  --minecraft-dark-blue-shadow: #00002a;
+  --minecraft-dark-green-shadow: #002a00;
+  --minecraft-dark-aqua-shadow: #002a2a;
+  --minecraft-dark-red-shadow: #2a0000;
+  --minecraft-dark-purple-shadow: #2a002a;
+  --minecraft-gold-shadow: #402a00;
+  --minecraft-gray-shadow: #2a2a2a;
+  --minecraft-dark-gray-shadow: #151515;
+  --minecraft-blue-shadow: #15153f;
+  --minecraft-green-shadow: #153f15;
+  --minecraft-aqua-shadow: #153f3f;
+  --minecraft-red-shadow: #3f1515;
+  --minecraft-light-purple-shadow: #3f153f;
+  --minecraft-yellow-shadow: #3f3f15;
+  --minecraft-white-shadow: #3f3f3f;
+}
+
+@layer base {
+  @font-face {
+    font-family: "Minecraft";
+    src: url("/fonts/Minecraft.otf"), url("/fonts/Minecraft-Bold.otf");
+  }
+}
+
+@utility text-minecraft-* {
+  text-shadow: 2px 2px 0px --value(--color-minecraft- * -shadow);
+}
