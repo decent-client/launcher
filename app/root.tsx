@@ -1,13 +1,9 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts } from "react-router";
 import { Providers } from "~/providers";
-import minecraft from "~/styles/minecraft.css?url";
 import tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
 
-export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: tailwind },
-  { rel: "stylesheet", href: minecraft },
-];
+export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: tailwind }];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import { Fragment } from "react/jsx-runtime";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Back, Close, Maximize, Minimize, Restore } from "~/components/icons/caption-buttons";
+import { ThemeToggle } from "~/components/theme-toggle";
 import { useBreadcrumbs } from "~/hooks/matches/breadcrumbs";
 import { cn } from "~/lib/utils";
 import { useAppWindow } from "~/providers/app-window";
@@ -39,8 +40,8 @@ export function WindowTitleBar() {
 
   return (
     <header className="relative flex h-(--title-bar-height) w-screen" data-tauri-drag-region>
+      {pathname !== "/" && <CaptionButton icon={<Back />} onClick={() => navigate("/")} />}
       <div className="pointer-events-none flex flex-1 items-center">
-        {pathname !== "/" && <CaptionButton icon={<Back />} onClick={() => navigate("/")} />}
         <ul className="ml-4 flex items-center gap-x-2 whitespace-nowrap font-segoe-ui text-base">
           <li className="mr-2">
             <img className="size-4" src="/app-icon.png" alt="App Icon" />
@@ -64,7 +65,9 @@ export function WindowTitleBar() {
           })}
         </ul>
       </div>
-      {/* <fieldset className="mr-1 flex h-(--title-bar-height) items-center gap-x-0.5">{icons}</fieldset> */}
+      <fieldset className="mr-1 flex h-(--title-bar-height) items-center gap-x-0.5">
+        <ThemeToggle />
+      </fieldset>
       <CaptionControlGroup>
         {buttons.map((button) => (
           <CaptionButton {...button} key={button.key} />

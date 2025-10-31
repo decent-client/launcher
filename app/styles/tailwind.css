@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import "./minecraft.css";
+
 @custom-variant dark (&:is(.dark *));
+@custom-variant oled (&:is(.oled *));
 
 @theme {
   --font-display: "Satoshi", "sans-serif";
@@ -98,10 +101,11 @@
   --caption-button-close-active: oklch(0.51 0.19 28);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
+.dark,
+.oled {
+  --background: oklch(0.175 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -133,6 +137,11 @@
 
   --caption-button-hover: oklch(0.27 0 0);
   --caption-button-active: oklch(0.37 0 0);
+}
+
+.oled {
+  --background: oklch(0.125 0 0);
+  --card: oklch(0.115 0 0);
 }
 
 @layer base {

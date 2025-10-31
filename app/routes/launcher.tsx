@@ -1,9 +1,11 @@
-import { Link } from "react-router";
-
-export const handle = {
-  breadcrumb: "Launcher",
-};
+import { useEffect } from "react";
+import { SelectAccount } from "~/components/select-account";
+import { showLauncherWindow } from "~/lib/bindings/show-window";
 
 export default function Launcher() {
-  return <Link to="splash-screen">Go to Splash Screen</Link>;
+  useEffect(() => {
+    showLauncherWindow(3000);
+  }, []);
+
+  return <SelectAccount />;
 }
