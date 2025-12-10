@@ -1,4 +1,5 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts } from "react-router";
+import { Toaster } from "~/components/ui/sonner";
 import { Providers } from "~/providers";
 import tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
@@ -14,8 +15,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="font-display h-screen grid grid-rows-(--grid-title-bar) overflow-hidden antialiased">
-        {children}
+      <body className="font-display max-h-screen h-screen grid grid-rows-(--grid-title-bar) overflow-hidden antialiased">
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
         <Scripts />
       </body>
     </html>
@@ -23,11 +27,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (
-    <Providers>
-      <Outlet />
-    </Providers>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -18,7 +18,14 @@ fn main() {
             .plugin(
                 "instance",
                 InlinedPlugin::new()
-                    .commands(&["get_all"])
+                    .commands(&[
+                        "create_instance",
+                        "get_instance",
+                        "remove_instance",
+                        "get_instances",
+                        "rename_instance",
+                        "update_instance_icon",
+                    ])
                     .default_permission(DefaultPermissionRule::AllowAllCommands),
             ),
     )

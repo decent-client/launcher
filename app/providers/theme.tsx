@@ -1,20 +1,20 @@
-import { Loader2, Monitor, Moon, MoonStar, Sun } from "lucide-react";
+import { Loader2, Monitor, Moon, Sun } from "lucide-react";
 import { createContext, type JSX, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "~/hooks/storage";
 
-export type Theme = "light" | "dark" | "oled" | "system";
+export type Theme = "light" | "dark" | "system";
 
 export const icons: { [K in Theme]: JSX.Element } = {
   light: <Sun className="size-3.5" />,
   dark: <Moon className="size-3.5" />,
-  oled: <MoonStar className="size-3.5" />,
+  // oled: <MoonStar className="size-3.5" />,
   system: <Monitor className="size-3.5" />,
 };
 
 export const themes: { name: Theme; icon: JSX.Element }[] = [
   { name: "light", icon: icons.light },
   { name: "dark", icon: icons.dark },
-  { name: "oled", icon: icons.oled },
+  // { name: "oled", icon: icons.oled },
   { name: "system", icon: icons.system },
 ];
 
@@ -55,11 +55,10 @@ export function ThemeProvider({
       if (theme === "system") {
         resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         setResolvedTheme(resolvedTheme);
-        setIcon(icons[resolvedTheme]);
       } else {
         setResolvedTheme(theme);
-        setIcon(icons[theme]);
       }
+      setIcon(icons[resolvedTheme]);
 
       root.classList.add(resolvedTheme);
     }

@@ -25,9 +25,9 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
 }
 
 #[tauri::command]
-async fn authenticate<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+async fn authenticate<R: Runtime>(app: AppHandle<R>) -> Result<AccountRecord, String> {
     match authenticate_impl(&app).await {
-        Ok(_) => Ok(()),
+        Ok(account) => Ok(account),
         Err(err) => {
             log::error!("minecraft authentication failed: {:#}", err);
             Err(format!("{:#}", err))
@@ -35,7 +35,7 @@ async fn authenticate<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     }
 }
 
-async fn authenticate_impl<R: Runtime>(app: &AppHandle<R>) -> anyhow::Result<()> {
+async fn authenticate_impl<R: Runtime>(app: &AppHandle<R>) -> anyhow::Result<AccountRecord> {
     let flow = minecraft_auth::init().context("failed to initialise Minecraft auth flow")?;
     let auth_url = flow.authorize_url();
     let expected_state = flow.csrf_secret().to_string();
@@ -140,7 +140,7 @@ async fn authenticate_impl<R: Runtime>(app: &AppHandle<R>) -> anyhow::Result<()>
     minecraft_auth::save_account(app, &account)
         .context("failed to persist authenticated account")?;
 
-    Ok(())
+    Ok(account)
 }
 
 #[tauri::command]

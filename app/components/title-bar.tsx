@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { Fragment } from "react/jsx-runtime";
-import { Link, useLocation, useNavigate } from "react-router";
-import { Back, Close, Maximize, Minimize, Restore } from "~/components/icons/caption-buttons";
+import { Link } from "react-router";
+import { Close, Maximize, Minimize, Restore } from "~/components/icons/caption-buttons";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { useBreadcrumbs } from "~/hooks/matches/breadcrumbs";
 import { cn } from "~/lib/utils";
@@ -16,8 +16,8 @@ type CaptionButton = {
 export function WindowTitleBar() {
   const { minimizeWindow, maximizeWindow, closeWindow, isMaximized } = useAppWindow();
   const breadcrumbs = useBreadcrumbs();
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  // const { pathname } = useLocation();
+  // const navigate = useNavigate();
 
   const buttons: CaptionButton[] = [
     {
@@ -39,8 +39,8 @@ export function WindowTitleBar() {
   ];
 
   return (
-    <header className="relative flex h-(--title-bar-height) w-screen" data-tauri-drag-region>
-      {pathname !== "/" && <CaptionButton icon={<Back />} onClick={() => navigate("/")} />}
+    <header className="relative z-999 flex h-(--title-bar-height) w-screen" data-tauri-drag-region>
+      {/* {pathname !== "/" && <CaptionButton icon={<Back />} onClick={() => navigate("/")} />} */}
       <div className="pointer-events-none flex flex-1 items-center">
         <ul className="ml-4 flex items-center gap-x-2 whitespace-nowrap font-segoe-ui text-base">
           <li className="mr-2">
@@ -50,18 +50,33 @@ export function WindowTitleBar() {
             <Link to="/">Decent Client</Link>
           </li>
           {breadcrumbs.map((crumb, index) => {
-            return (
-              <Fragment key={crumb}>
-                {index > 0 && (
+            if (typeof crumb === "string") {
+              return (
+                <Fragment key={crumb}>
+                  {index > 0 && (
+                    <li>
+                      <ChevronRight className="size-3.5 stroke-muted-foreground" />
+                    </li>
+                  )}
+                  <li key={crumb} className="text-muted-foreground">
+                    {crumb}
+                  </li>
+                </Fragment>
+              );
+            }
+
+            return crumb?.map((c, i) => (
+              <Fragment key={c}>
+                {i > 0 && (
                   <li>
                     <ChevronRight className="size-3.5 stroke-muted-foreground" />
                   </li>
                 )}
-                <li key={crumb} className="text-muted-foreground">
-                  {crumb}
+                <li key={c} className="text-muted-foreground">
+                  {c}
                 </li>
               </Fragment>
-            );
+            ));
           })}
         </ul>
       </div>

@@ -1,5 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { authenticateAccount } from "~/lib/bindings/account";
 
 export type AccountSummary = {
   uuid: string;
@@ -39,24 +41,66 @@ export function AccountsProvider({ children }: { children: React.ReactNode }) {
   }, [refresh]);
 
   const authenticate = useCallback(async () => {
-    await invoke("plugin:account|authenticate");
-    await refresh();
+    try {
+      const record = await authenticateAccount();
+      await refresh();
+      toast.success("Successfully authenticated account", {
+        description: `The account "${record.username}" has been added.`,
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to authenticate account";
+      toast.error("Failed to add account", {
+        description: errorMessage,
+      });
+      throw error;
+    }
   }, [refresh]);
 
   const setActive = useCallback(
     async (uuid: string) => {
-      await invoke("plugin:account|set_active", { uuid });
-      await refresh();
+      const account = accounts.find((a) => a.uuid === uuid);
+      const username = account?.username || "Unknown";
+
+      if (account === accounts.find((account) => account.isActive)) {
+        toast.warning(`The account "${accounts.find((account) => account.isActive)?.username}" is already active`);
+        return;
+      }
+
+      try {
+        await invoke("plugin:account|set_active", { uuid });
+        await refresh();
+        toast.success(`Set account "${username}" to active`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to set active account";
+        toast.error("Failed to set active account", {
+          description: errorMessage,
+        });
+        throw error;
+      }
     },
-    [refresh],
+    [refresh, accounts],
   );
 
   const remove = useCallback(
     async (uuid: string) => {
-      await invoke("plugin:account|remove", { uuid });
-      await refresh();
+      const account = accounts.find((a) => a.uuid === uuid);
+      const username = account?.username || "Unknown";
+
+      try {
+        await invoke("plugin:account|remove", { uuid });
+        await refresh();
+        toast.success("Successfully removed account", {
+          description: `The account "${username}" has been removed.`,
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to remove account";
+        toast.error("Failed to remove account", {
+          description: errorMessage,
+        });
+        throw error;
+      }
     },
-    [refresh],
+    [refresh, accounts],
   );
 
   const value = useMemo<AccountsContextValue>(
