@@ -1,23 +1,10 @@
-/** biome-ignore-all lint/correctness/useHookAtTopLevel: <explanation> */
 import { useCallback, useState } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
-  const [value, setValue] = useState(initialValue);
-
-  if (typeof window === "undefined") {
-    return [value as T, setValue] as const;
-  }
-
   return createStorageHook(window.localStorage, key, initialValue);
 }
 
 export function useSessionStorage<T>(key: string, initialValue: T) {
-  const [value, setValue] = useState(initialValue);
-
-  if (typeof window === "undefined") {
-    return [value as T, setValue] as const;
-  }
-
   return createStorageHook(window.sessionStorage, key, initialValue);
 }
 
